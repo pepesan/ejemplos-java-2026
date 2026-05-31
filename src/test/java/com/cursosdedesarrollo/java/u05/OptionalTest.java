@@ -7,24 +7,34 @@ import static org.junit.Assert.*;
 public class OptionalTest {
 
     @Test
-    public void ofCreaPresenteYofNullableVacioConNull() {
-        assertTrue(Optional.of("hola").isPresent());
-        assertFalse(Optional.ofNullable(null).isPresent());
+    public void buscarPorIndiceValidoDevuelvePresente() {
+        String[] arr = {"uno", "dos", "tres"};
+        Optional<String> resultado = OptionalDemo.buscarPorIndice(arr, 1);
+        assertTrue(resultado.isPresent());
+        assertEquals("dos", resultado.get());
     }
 
     @Test
-    public void filterYMapTransforman() {
-        String res = Optional.of("hola")
-            .filter(s -> s.length() > 2)
-            .map(String::toUpperCase)
-            .orElse("DEFAULT");
-        assertEquals("HOLA", res);
+    public void buscarPorIndiceInvalidoDevuelveVacio() {
+        String[] arr = {"uno"};
+        assertFalse(OptionalDemo.buscarPorIndice(arr, 5).isPresent());
+        assertFalse(OptionalDemo.buscarPorIndice(arr, -1).isPresent());
     }
 
     @Test
-    public void orElseDevuelveDefectoCuandoVacio() {
-        String res = Optional.<String>empty().orElse("default");
-        assertEquals("default", res);
+    public void obtenerEnMayusculasTransformaStringLargo() {
+        assertEquals("HOLA", OptionalDemo.obtenerEnMayusculas(Optional.of("hola")));
+    }
+
+    @Test
+    public void obtenerEnMayusculasDevuelveDefaultSiStringCorto() {
+        // "ab" tiene longitud <= 2: no supera el filter
+        assertEquals("DEFAULT", OptionalDemo.obtenerEnMayusculas(Optional.of("ab")));
+    }
+
+    @Test
+    public void obtenerEnMayusculasDevuelveDefaultSiVacio() {
+        assertEquals("DEFAULT", OptionalDemo.obtenerEnMayusculas(Optional.empty()));
     }
 
     @Test(expected = IllegalStateException.class)

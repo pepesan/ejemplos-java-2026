@@ -2,7 +2,6 @@ package com.cursosdedesarrollo.java.u05;
 
 import org.junit.Test;
 import java.util.*;
-import java.util.stream.*;
 import static org.junit.Assert.*;
 
 public class StreamApiTest {
@@ -11,10 +10,7 @@ public class StreamApiTest {
 
     @Test
     public void filterMapCollectFunciona() {
-        List<String> resultado = nombres.stream()
-            .filter(n -> n.length() > 3)
-            .map(String::toUpperCase)
-            .collect(Collectors.toList());
+        List<String> resultado = StreamDemo.nombresMayoresQue(nombres, 3);
         assertTrue(resultado.contains("CARMEN"));
         assertTrue(resultado.contains("DAVID"));
         assertFalse(resultado.contains("ANA"));
@@ -22,25 +18,20 @@ public class StreamApiTest {
 
     @Test
     public void groupingByAgrupaCorrectamente() {
-        Map<Integer, List<String>> porLongitud = nombres.stream()
-            .collect(Collectors.groupingBy(String::length));
+        Map<Integer, List<String>> porLongitud = StreamDemo.agruparPorLongitud(nombres);
         assertTrue(porLongitud.get(3).contains("Ana"));
         assertTrue(porLongitud.get(6).contains("Carmen"));
     }
 
     @Test
     public void mapToIntSumaSumaLongitudes() {
-        int total = nombres.stream()
-            .mapToInt(String::length)
-            .sum();
+        int total = StreamDemo.sumaDeLongitudes(nombres);
         assertEquals(20, total); // Ana(3)+Bob(3)+Carmen(6)+David(5)+Eva(3)
     }
 
     @Test
     public void countCuentaElementosFiltrados() {
-        long pares = nombres.stream()
-            .filter(n -> n.length() % 2 == 0)
-            .count();
+        long pares = StreamDemo.contarConLongitudPar(nombres);
         assertEquals(1, pares); // solo Carmen(6)
     }
 }
