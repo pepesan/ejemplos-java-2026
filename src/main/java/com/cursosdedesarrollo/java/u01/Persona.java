@@ -9,8 +9,6 @@ public class Persona {
     private static final AtomicInteger total = new AtomicInteger(0); // thread-safe
 
     public Persona(String nombre, int edad) {
-        if (nombre == null || nombre.isBlank())
-            throw new IllegalArgumentException("nombre no puede ser nulo o vacío");
         this.nombre = nombre;
         this.edad   = edad;
         total.incrementAndGet();
@@ -42,8 +40,6 @@ public class Persona {
         public Builder nombre(String n) { this.nombre = n; return this; }
         public Builder edad(int e)      { this.edad   = e; return this; }
         public Persona build() {
-            if (nombre == null || nombre.isBlank())
-                throw new IllegalStateException("nombre es obligatorio");
             return new Persona(this);
         }
     }
