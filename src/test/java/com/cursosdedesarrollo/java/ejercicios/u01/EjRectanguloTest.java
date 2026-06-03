@@ -6,30 +6,30 @@ import static org.junit.Assert.*;
 public class EjRectanguloTest {
 
     @Test
-    public void areaEsAnchoporAlto() {
-        assertEquals((Object) 12L, new EjRectangulo(3L, 4L).area());
-    }
-
-    @Test
-    public void perimetroEsCorrecto() {
-        assertEquals((Object) 14L, new EjRectangulo(3L, 4L).perimetro());
-    }
-
-    @Test
-    public void cuadradoReconocido() {
-        assertTrue(new EjRectangulo(5L, 5L).esCuadrado());
-        assertFalse(new EjRectangulo(3L, 4L).esCuadrado());
-    }
-
-    @Test
-    public void dimensionNegativaSeConvierteEnAbsoluta() {
-        EjRectangulo r = new EjRectangulo(-3L, 4L);
+    public void constructorAsignaValores() {
+        EjRectangulo r = new EjRectangulo(3L, 4L);
         assertEquals((Object) 3L, r.getAncho());
-        assertEquals((Object) 12L, r.area());
+        assertEquals((Object) 4L, r.getAlto());
     }
 
     @Test
-    public void dimensionCeroProduceAreaCero() {
-        assertEquals((Object) 0L, new EjRectangulo(0L, 4L).area());
+    public void setterActualizaAncho() {
+        EjRectangulo r = new EjRectangulo(3L, 4L);
+        r.setAncho(10L);
+        assertEquals((Object) 10L, r.getAncho());
+    }
+
+    @Test
+    public void setterActualizaAlto() {
+        EjRectangulo r = new EjRectangulo(3L, 4L);
+        r.setAlto(20L);
+        assertEquals((Object) 20L, r.getAlto());
+    }
+
+    @Test
+    public void toStringContieneAnchoYAlto() {
+        String s = new EjRectangulo(3L, 4L).toString();
+        assertTrue(s.contains("3"));
+        assertTrue(s.contains("4"));
     }
 }

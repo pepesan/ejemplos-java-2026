@@ -1,26 +1,24 @@
 package com.cursosdedesarrollo.java.ejercicios.u01;
 
-// Ejercicio u01-1: clase Rectangulo con atributos, constructores y métodos derivados.
-// Demuestra: atributos privados, constructor con validación, getters, toString.
+// Ejercicio u01-1: clase, atributos Long, constructores, getters, setters y toString
 public class EjRectangulo {
 
-    private final Long ancho;
-    private final Long alto;
+    private Long ancho;
+    private Long alto;
 
-    // Si se pasa un valor negativo se usa su valor absoluto (sin excepciones en esta fase)
     public EjRectangulo(Long ancho, Long alto) {
-        this.ancho = Math.abs(ancho);
-        this.alto  = Math.abs(alto);
+        this.ancho = ancho;
+        this.alto  = alto;
     }
 
-    public Long    getAncho()    { return ancho; }
-    public Long    getAlto()     { return alto; }
-    public Long    area()        { return ancho * alto; }
-    public Long    perimetro()   { return 2 * (ancho + alto); }
-    public boolean esCuadrado()  { return ancho.equals(alto); }
+    public Long getAncho() { return ancho; }
+    public Long getAlto()  { return alto; }
+
+    public void setAncho(Long ancho) { this.ancho = ancho; }
+    public void setAlto(Long alto)   { this.alto  = alto; }
 
     @Override
     public String toString() {
-        return "Rectangulo{ancho=" + ancho + ", alto=" + alto + ", area=" + area() + "}";
+        return "Rectangulo{ancho=" + ancho + ", alto=" + alto + "}";
     }
 }
