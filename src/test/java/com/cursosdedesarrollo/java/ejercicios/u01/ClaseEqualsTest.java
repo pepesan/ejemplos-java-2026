@@ -8,11 +8,18 @@ import static org.junit.Assert.assertTrue;
 
 public class ClaseEqualsTest {
     @Test
-    public void testEquals() {
+    public void testEqualsObjetosIguales() {
         ClaseEquals objeto1 = new ClaseEquals("Hola", "Adios");
-        ClaseEquals objeto2 = new ClaseEquals("Hol", "Adios");
+        ClaseEquals objeto2 = new ClaseEquals("Hola", "Adios");
         assertTrue(objeto1.equals(objeto2));
         assertEquals(objeto1, objeto2);
+    }
+
+    @Test
+    public void testEqualsObjetosDiferentes() {
+        ClaseEquals objeto1 = new ClaseEquals("Hola", "Adios");
+        ClaseEquals objeto2 = new ClaseEquals("Hol", "Adios");
+        org.junit.Assert.assertFalse(objeto1.equals(objeto2));
     }
 
     @Test
