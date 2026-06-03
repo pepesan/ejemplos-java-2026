@@ -16,8 +16,25 @@ public class Vehiculo {
         this(marca, 2026);
     }
 
-    public String getMarca() { return marca; }
-    public int    getAño()   { return año;   }
+    // Constructor sin parametros
+    public Vehiculo() {
+        this("", 2026);
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+    public int    getAño()   {
+        return año;
+    }
+
+    public void setMarca (String marca){
+        this.marca = marca;
+    }
+
+    public void setAño(int año){
+        this.año = año;
+    }
 
     @Override
     public String toString() {
