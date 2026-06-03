@@ -7,8 +7,15 @@ public class PilaresPooTest {
 
     // Herencia
     @Test
+    public void perroesTipoPerro() {
+        Perro a = new Perro("Rex", "Podenco");
+        assertNotNull(a);
+        assertTrue(a instanceof Perro);
+    }
+    // Herencia
+    @Test
     public void perroEsSubtipoDeAnimal() {
-        Animal a = new Perro("Rex");
+        Animal a = new Perro("Rex", "Podenco");
         assertNotNull(a);
         assertTrue(a instanceof Animal);
     }
@@ -16,8 +23,8 @@ public class PilaresPooTest {
     // Polimorfismo — dynamic dispatch
     @Test
     public void dinamicDispatchEjecutaMetodoDelTipoReal() {
-        Animal perro = new Perro("Rex");
-        Animal gato  = new Gato("Misi");
+        Animal perro = new Perro("Rex", "Podenco");
+        Animal gato  = new Gato("Misi", 2L);
         assertEquals("Guau!", perro.hacerSonido());
         assertEquals("Miau!", gato.hacerSonido());
     }

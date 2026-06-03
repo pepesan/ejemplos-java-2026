@@ -1,8 +1,12 @@
 package com.cursosdedesarrollo.java.u01;
 
 public class Perro extends Animal {
-    public Perro(String nombre) {
+
+    String raza;
+
+    public Perro(String nombre,  String raza) {
         super(nombre);
+        this.raza = raza;
     }
 
     @Override

@@ -57,10 +57,10 @@ Atributos `private Long` — tipo envoltorio en lugar del primitivo `long`, lo q
 ### Ejercicio 3 — Figuras geométricas (herencia + polimorfismo)
 | | Fichero |
 |--|---------|
-| Solución | `ejercicios/u01/EjFiguraGeometrica.java` |
+| Solución | `ejercicios/u01/EjFigura.java`, `ejercicios/u01/EjCirculo.java`, `ejercicios/u01/EjTriangulo.java` |
 | Test     | `ejercicios/u01/EjFiguraGeometricaTest.java` |
 
-`Figura` es abstracta con `area()` y `perimetro()` abstractos. `Circulo` usa `Math.abs` para radio negativo. `areaTotal(Figura... figuras)` usa varargs — característica del lenguaje que no requiere importar nada — para recibir cualquier número de figuras y demostrar el dynamic dispatch sin necesitar `List` (que se ve en u02).
+Cada clase vive en su propio fichero — sin clases anidadas. `EjFigura` es concreta (no abstracta): `area()` y `perimetro()` devuelven `0.0` por defecto; `EjCirculo` y `EjTriangulo` los sobreescriben con `@Override`. El test `dynamicDispatch_variableFiguraEjecutaMetodoDelTipoReal` es el más importante: una variable de tipo `EjFigura` apunta a un `EjCirculo` y la llamada a `area()` ejecuta la versión de `EjCirculo` — eso es el dynamic dispatch. `areaTotal(EjFigura... figuras)` vive en `EjFigura` como método estático y usa varargs para recibir cualquier número de figuras sin necesitar `List` (que se ve en u02).
 
 ---
 
@@ -94,75 +94,105 @@ Las tres versiones de `convertir` tienen firmas distintas (1, 2 y 3 parámetros)
 
 ---
 
+### Ejercicio 8 — Animal (clase abstracta)
+| | Fichero |
+|--|---------|
+| Solución | `ejercicios/u01/EjAnimal.java`, `ejercicios/u01/EjPerro.java`, `ejercicios/u01/EjGato.java` |
+| Test     | `ejercicios/u01/EjAnimalTest.java` |
+
+`EjAnimal` no puede instanciarse directamente — `new EjAnimal(...)` da error de compilación. Las subclases **deben** implementar `hacerSonido()` o el compilador las marcará también como abstractas. El test `variableAbstractaEjecutaMetodoDelSubtipo` es el más importante: una variable de tipo `EjAnimal` apunta a un `EjPerro` y `hacerSonido()` devuelve `"Guau"` — el mismo dynamic dispatch que con `EjFigura`, pero esta vez la clase base ni siquiera puede devolver un valor por defecto porque el método es abstracto.
+
+---
+
+### Ejercicio 9 — Describible (interfaz)
+| | Fichero |
+|--|---------|
+| Solución | `ejercicios/u01/EjDescribible.java`, `ejercicios/u01/EjProducto.java`, `ejercicios/u01/EjServicio.java` |
+| Test     | `ejercicios/u01/EjDescribibleTest.java` |
+
+`EjProducto` y `EjServicio` no tienen ninguna relación de herencia entre sí, pero las dos cumplen el contrato `EjDescribible`. Una variable de tipo `EjDescribible` puede apuntar a cualquiera de las dos — polimorfismo por interfaz. A diferencia de la clase abstracta, la interfaz no aporta estado ni implementación: solo define el contrato. Esto es la distinción clave entre `extends` (herencia, "es un tipo de") e `implements` (contrato, "sabe hacer").
+
+---
+
 ### Ejercicio 7 — Atributos y métodos estáticos: aparcamiento
 | | Fichero |
 |--|---------|
 | Solución | `ejercicios/u01/EjParking.java` |
 | Test     | `ejercicios/u01/EjParkingTest.java` |
 
-`CAPACIDAD` es `public static final`: constante de clase accesible sin objeto y usada directamente en los tests (`EjParking.CAPACIDAD`) para que no haya "números mágicos". `plazasOcupadas` es `private static`: un único valor compartido por todos los objetos — cuando un vehículo entra o sale, todos los objetos ven el cambio. `entrar()` devuelve `boolean` en lugar de lanzar excepción (las excepciones son u03): el llamador sabe si la operación tuvo éxito. El test usa `@Before` con `resetear()` para que cada prueba parta de un aparcamiento vacío — sin ese reset el estado estático se acumula entre tests y los resultados dependerían del orden de ejecución. El ejemplo de referencia es `u01/Contador.java`.
+`CAPACIDAD` es `public static final`: constante de clase accesible sin objeto y usada directamente en los tests (`EjParking.CAPACIDAD`) para evitar "números mágicos". `plazasOcupadas` es `private static`: un único valor compartido — todos ven el mismo estado del aparcamiento. `setPlazasLibres(int)` traduce "plazas libres" a "plazas ocupadas" (`plazasOcupadas = CAPACIDAD - libres`) porque el atributo interno registra las ocupadas, no las libres; el test interactúa con el concepto de "libres" sin conocer ese detalle. La clase no tiene instancias ni constructor — toda la lógica es estática. El test usa `@Before` con `resetear()` para que cada prueba parta de cero: sin ese reset el estado estático se acumula entre tests y los resultados dependerían del orden de ejecución. El ejemplo de referencia es `u01/Contador.java`.
 
 ---
 
-## u02 — Sistema de tipos, colecciones y ficheros
+## u02 — Tipos, estructuras de control, cadenas y colecciones
 
-### Ejercicio 1 — Frecuencia de palabras
+### Ejercicio 1 — Variables y tipos básicos
 | | Fichero |
 |--|---------|
-| Solución | `ejercicios/u02/EjFrecuenciaPalabras.java` |
-| Test     | `ejercicios/u02/EjFrecuenciaPalabrasTest.java` |
+| Solución | `ejercicios/u02/EjTipos.java` |
+| Test     | `ejercicios/u02/EjTiposTest.java` |
 
-`getOrDefault(palabra, 0) + 1` aprovecha el autoboxing: el `0` se autoboxea a `Integer` al pasar al mapa, y se desboxea al sumar. `LinkedHashMap` preserva el orden de inserción.
+Cada método devuelve un tipo distinto: `int`, `double`, `boolean`, `char` y `String`. `esPar` usa el operador módulo (`% 2 == 0`). `primeraLetra` introduce `charAt(0)` como la forma más directa de obtener un carácter concreto. `String.valueOf(n)` es la conversión canónica de primitivo a `String`, preferible a concatenar con `""`.
 
 ---
 
-### Ejercicio 2 — Validador de email
+### Ejercicio 2 — Condicionales
 | | Fichero |
 |--|---------|
-| Solución | `ejercicios/u02/EjValidadorEmail.java` |
-| Test     | `ejercicios/u02/EjValidadorEmailTest.java` |
+| Solución | `ejercicios/u02/EjCondicionales.java` |
+| Test     | `ejercicios/u02/EjCondicionalesTest.java` |
 
-Cada regla de validación usa un método distinto de `String`: `indexOf`, `lastIndexOf`, `substring`, `contains`, `length`. Cada `return false` temprano evita chequeos innecesarios (cláusulas de guarda).
+`maximo` usa un `if` simple con `return` inmediato — sin `else` innecesario. `clasificarNota` encadena `else if` en orden ascendente: cuando se llega a cada rama ya se sabe que la condición anterior no se cumplió, por lo que no hay que repetir el límite inferior. `signo` demuestra que `else` sin condición cubre el único caso restante.
 
 ---
 
-### Ejercicio 3 — Estadísticas de array
+### Ejercicio 3 — Bucles
 | | Fichero |
 |--|---------|
-| Solución | `ejercicios/u02/EjEstadisticasArray.java` |
-| Test     | `ejercicios/u02/EjEstadisticasArrayTest.java` |
+| Solución | `ejercicios/u02/EjBucles.java` |
+| Test     | `ejercicios/u02/EjBuclesTest.java` |
 
-`Arrays.copyOf` crea una copia antes de ordenar, preservando el array original. El cast `(double) suma / arr.length` es necesario porque la división entera truncaría el resultado.
+`sumar` usa `for` clásico con índice — el acumulador `total` empieza en 0 y suma cada valor del rango. `factorial` usa `while` con la variable `i` que decrece: muestra que `for` y `while` son intercambiables, pero `while` es más natural cuando la condición de salida no es un contador simple. `contarPares` usa `for-each` que es la forma idiomática de recorrer un array cuando no se necesita el índice.
 
 ---
 
-### Ejercicio 4 — Agrupador de palabras
+### Ejercicio 4 — Cadenas de caracteres
 | | Fichero |
 |--|---------|
-| Solución | `ejercicios/u02/EjAgrupador.java` |
-| Test     | `ejercicios/u02/EjAgrupadorTest.java` |
+| Solución | `ejercicios/u02/EjCadenas.java` |
+| Test     | `ejercicios/u02/EjCadenasTest.java` |
 
-`TreeMap` mantiene las claves en orden natural (alfabético) sin esfuerzo adicional. El `Comparator` anónimo en `ordenarPorLongitud` encadena dos criterios: longitud primero, alfabético como desempate.
+`contarCaracter` recorre la cadena con `charAt(i)` en un `for` clásico porque necesita el índice. `invertir` acumula con `+=` sobre un `String` vacío para que quede claro qué ocurre, aunque en código de producción se usaría `StringBuilder` (se verá más adelante). `contiene` convierte ambos operandos a minúsculas antes de llamar a `contains` — la forma más legible de ignorar mayúsculas sin regex.
 
 ---
 
-### Ejercicio 5 — Par genérico
+### Ejercicio 5 — List
 | | Fichero |
 |--|---------|
-| Solución | `ejercicios/u02/EjParGenerico.java` |
-| Test     | `ejercicios/u02/EjParGenericoTest.java` |
+| Solución | `ejercicios/u02/EjLista.java` |
+| Test     | `ejercicios/u02/EjListaTest.java` |
 
-El factory method `de(A, B)` es estático y genérico — el compilador infiere `A` y `B` de los argumentos, evitando repetir los tipos en `new EjParGenerico<String, Integer>(...)`. Los atributos son `final` porque un par no debería mutar.
+`primerosN` usa `for` con índice y comprueba dos condiciones en el `&&` para no salirse del tamaño real de la lista. `filtrarPositivos` recorre con `for-each` y añade solo los que pasan la condición — el patrón clásico "crear lista resultado + bucle + add condicional". `unir` gestiona el separador comprobando si `i > 0` para no añadirlo antes del primer elemento.
 
 ---
 
-### Ejercicio 6 — Estaciones del año
+### Ejercicio 6 — Map
 | | Fichero |
 |--|---------|
-| Solución | `ejercicios/u02/EjEstacion.java` |
-| Test     | `ejercicios/u02/EjEstacionTest.java` |
+| Solución | `ejercicios/u02/EjMapa.java` |
+| Test     | `ejercicios/u02/EjMapaTest.java` |
 
-El enum lleva la lógica consigo: cada constante sabe sus meses y si es fría. `deMes(int)` recorre `values()` con un caso especial para `INVIERNO` porque su rango cruza el año (diciembre → febrero). Para mes fuera de rango devuelve `null` en lugar de lanzar excepción — ese mecanismo se introduce en u03.
+`contarOcurrencias` usa `getOrDefault(palabra, 0) + 1` — el patrón estándar para contar sin comprobar si la clave existe previamente. `obtenerODefecto` y `existeClave` son envoltorios mínimos de `getOrDefault` y `containsKey`, aquí usados para practicar esa API de forma directa.
+
+---
+
+### Ejercicio 7 — Set
+| | Fichero |
+|--|---------|
+| Solución | `ejercicios/u02/EjConjunto.java` |
+| Test     | `ejercicios/u02/EjConjuntoTest.java` |
+
+`sinDuplicados` usa un `HashSet<String> vistos` como guardia: `vistos.add(elemento)` devuelve `false` si el elemento ya estaba, por lo que en una sola instrucción se comprueba y registra. `tieneDuplicados` hace lo mismo pero sale en cuanto encuentra el primer duplicado. `comunes` convierte la primera lista en un `HashSet` para que las búsquedas sean O(1) en lugar de O(n).
 
 ---
 

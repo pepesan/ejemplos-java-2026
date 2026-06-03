@@ -1,21 +1,15 @@
 package com.cursosdedesarrollo.java.ejercicios.u01;
 
 // Ejercicio u01-7: atributos y métodos estáticos
-// CAPACIDAD y plazasOcupadas pertenecen a la clase (un solo valor compartido).
-// matricula pertenece a cada vehículo (un valor distinto por instancia).
+// Todos los miembros son static: la clase gestiona un único aparcamiento compartido.
+// No se crean instancias — toda la interacción es a través del nombre de la clase.
 public class EjParking {
 
     public static final int CAPACIDAD = 5;
 
     private static int plazasOcupadas = 0;
 
-    private final String matricula;
-
-    public EjParking(String matricula) {
-        this.matricula = matricula;
-    }
-
-    // ── Métodos estáticos — no necesitan objeto ──────────────────────────────
+    // ── Consultas ────────────────────────────────────────────────────────────
 
     public static int getPlazasLibres() {
         return CAPACIDAD - plazasOcupadas;
@@ -25,27 +19,14 @@ public class EjParking {
         return plazasOcupadas < CAPACIDAD;
     }
 
+    // ── Modificación ─────────────────────────────────────────────────────────
+
+    // Establece directamente cuántas plazas quedan libres
+    public static void setPlazasLibres(int libres) {
+        plazasOcupadas = CAPACIDAD - libres;
+    }
+
     public static void resetear() {
         plazasOcupadas = 0;
-    }
-
-    // ── Métodos de instancia — modifican el estado compartido ────────────────
-
-    public boolean entrar() {
-        if (!hayPlazas()) {
-            return false;
-        }
-        plazasOcupadas++;
-        return true;
-    }
-
-    public void salir() {
-        if (plazasOcupadas > 0) {
-            plazasOcupadas--;
-        }
-    }
-
-    public String getMatricula() {
-        return matricula;
     }
 }

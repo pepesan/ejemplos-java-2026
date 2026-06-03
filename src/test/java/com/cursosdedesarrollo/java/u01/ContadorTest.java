@@ -16,6 +16,31 @@ public class ContadorTest {
     // ── Atributo estático ────────────────────────────────────────────────────
 
     @Test
+    public void accesoValorEstatico() {
+        // Antes de crear ningún objeto el contador de clase vale 0
+        assertEquals(0, Contador.valorEstatico);
+        Contador.valorEstatico = 1;
+        assertEquals(1, Contador.valorEstatico);
+        Contador c = new Contador();
+        assertEquals(1, c.valorEstatico);
+        c.valorEstatico = 2;
+        assertEquals(2, c.valorEstatico);
+        assertEquals(2, Contador.valorEstatico);
+
+    }
+
+    // Atributo static final (CONSTANTE)
+    @Test
+    public void accesoValorEstaticoFinalConstante() {
+        // Antes de crear ningún objeto el contador de clase vale 0
+        assertEquals(2, Contador.VALOR_CONSTANTE);
+        Contador c = new Contador();
+        assertEquals(2, c.VALOR_CONSTANTE);
+    }
+
+    // ── Atributo estático ────────────────────────────────────────────────────
+
+    @Test
     public void sinObjetosTotalEsCero() {
         // Antes de crear ningún objeto el contador de clase vale 0
         assertEquals(0, Contador.getTotalCreados());

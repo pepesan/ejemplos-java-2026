@@ -46,7 +46,6 @@ Si puedes implementa las pruebas con Junit sino haz una clase Main.
 Crea la clase `Termostato` con una temperatura interna que **siempre** debe estar entre `10.0 °C` y `30.0 °C`.
 Define esos límites como constantes de clase (`public static final double TEMP_MIN` y `TEMP_MAX`).
 Implementa `setTemperatura`, `getTemperatura`, `subir(double grados)` y `bajar(double grados)`.
-Cualquier valor fuera del rango debe quedar acotado al límite más cercano, sin lanzar excepción.
 
 **Concepto:** encapsulamiento — la invariante del estado nunca puede romperse desde fuera; constantes de clase `static final`.
 
@@ -54,29 +53,21 @@ Cualquier valor fuera del rango debe quedar acotado al límite más cercano, sin
 
 ### Ejercicio 3 — Figuras geométricas (herencia + polimorfismo)
 
-Crea una clase abstracta `Figura` con métodos abstractos `area()` y `perimetro()`.
-Implementa las subclases `Circulo` (radio) y `Triangulo` (base, altura y los tres lados).
-Añade un método estático `areaTotal(Figura... figuras)` (varargs) que sume las áreas de todas las figuras
-sin conocer sus tipos concretos. Usa `Math.abs` en el constructor de `Circulo` para valores negativos.
-No uses `List` ni colecciones (eso se verá en u02).
+Crea la clase `Figura` con un atributo `nombre` (`String`) y dos métodos `area()` y `perimetro()`
+que devuelvan `0.0` como valor por defecto.
 
-**Concepto:** herencia con `extends`, `abstract`, `@Override`, polimorfismo y dynamic dispatch.
+Implementa las subclases `Circulo` (radio) y `Triangulo` (base, altura y los tres lados),
+cada una usando `extends Figura` y sobreescribiendo `area()` y `perimetro()` con `@Override`.
+Usa `Math.abs` en el constructor de `Circulo` para valores negativos.
 
----
 
-### Ejercicio 4 — Biblioteca (composición)
-
-Crea las clases `Libro` (título, autor, año) y `Biblioteca` (nombre, lista de libros).
-`Biblioteca` debe permitir agregar (ignorar `null` silenciosamente), eliminar por título con un bucle `for`
-y buscar por título devolviendo el `Libro` encontrado o `null` si no existe.
-`getLibros()` debe devolver una copia de la lista para no exponer el estado interno.
-No uses lambdas ni `removeIf` (eso se verá en u05), ni `Collections.unmodifiableList` (u02).
-
-**Concepto:** composición ("tiene-un"), bucle de búsqueda y eliminación, devolver copia de colección.
+**Concepto:** herencia con `extends`, `@Override`, polimorfismo y dynamic dispatch —
+la JVM decide en tiempo de ejecución qué versión de `area()` ejecutar según el tipo real del objeto,
+aunque la variable sea de tipo `Figura`.
 
 ---
 
-### Ejercicio 6 — Igualdad por valor (equals y hashCode)
+### Ejercicio 4 — Igualdad por valor (equals y hashCode)
 
 Crea la clase `Coordenada` con `latitud` y `longitud` (`double`).
 Implementa constructores, getters, setters y `toString`.
@@ -93,26 +84,23 @@ No uses `==` para comparar `double` — usa `Double.compare(a, b) == 0`.
 
 ---
 
-### Ejercicio 7 — Atributos y métodos estáticos: aparcamiento
+### Ejercicio 5 — Atributos y métodos estáticos: aparcamiento
 
 Crea la clase `Parking` que gestiona las plazas de un aparcamiento con capacidad fija.
 
 - Define la constante `public static final int CAPACIDAD = 5`.
 - Define el atributo estático `static int plazasOcupadas` (inicialmente 0).
 - Método estático `getPlazasLibres()` → devuelve `CAPACIDAD - plazasOcupadas`.
+- Método estático `setPlazasLibres(int libres)` → establece el valor de plazas libres. 
 - Método estático `hayPlazas()` → devuelve `true` si quedan plazas libres.
-- Cada instancia representa un vehículo con su `matricula` (`String`).
-- `entrar()` → si hay plazas, incrementa `plazasOcupadas` y devuelve `true`; si no hay, devuelve `false`.
-- `salir()` → si `plazasOcupadas > 0`, decrementa `plazasOcupadas`.
 - Añade `resetear()` estático para aislar los tests entre sí.
 
-No uses excepciones para indicar que no hay plazas (eso se verá en u03): usa el `boolean` de retorno.
 
 Verifica con JUnit que:
 - Sin vehículos hay `CAPACIDAD` plazas libres y `hayPlazas()` devuelve `true`.
-- Cada `entrar()` exitoso reduce las plazas libres en uno.
-- Al alcanzar la capacidad, `hayPlazas()` devuelve `false` y un nuevo `entrar()` devuelve `false`.
-- `salir()` incrementa las plazas libres en uno.
+- usar Método estático `setPlazasLibres(int libres)` para colocar 4
+- `hayPlazas()` devuelve `true`
+- getPlazasLibres() devería devolver 4
 
 **Concepto:** atributo `static` como recurso compartido por todas las instancias;
 constante `static final`; métodos estáticos que consultan estado de clase sin necesitar objeto;
@@ -120,7 +108,7 @@ métodos de instancia que modifican ese estado compartido.
 
 ---
 
-### Ejercicio 5 — Conversor (sobrecarga)
+### Ejercicio 6— Conversor (sobrecarga)
 
 Crea la clase `Conversor` con tres versiones del método `convertir`:
 - `convertir(double km)` → millas  (1 km = 0,621371 millas)
@@ -133,67 +121,122 @@ No añadas validaciones de argumentos (eso se verá en u03).
 
 ---
 
-## u02 — Sistema de tipos, colecciones y ficheros
+### Ejercicio 7 — Animal (clase abstracta)
 
-### Ejercicio 1 — Frecuencia de palabras
+Crea la clase **abstracta** `EjAnimal` con un atributo `nombre` (`String`),
+su getter y un método abstracto `hacerSonido()` que devuelva un `String`.
 
-Escribe el método `contar(String texto)` que devuelva un `Map<String, Integer>` con la frecuencia
-de cada palabra (ignorando mayúsculas y puntuación).
-Añade `masRepetida(Map)` que devuelva la palabra más frecuente.
+Implementa las subclases `EjPerro` y `EjGato` con `extends EjAnimal`,
+cada una sobrescribiendo `hacerSonido()` con `@Override`:
+- `EjPerro.hacerSonido()` → `"Guau"`
+- `EjGato.hacerSonido()` → `"Miau"`
 
-**Concepto:** `Map`, `getOrDefault`, autoboxing al insertar/leer `Integer`.
+Verifica en el test que una variable de tipo `EjAnimal` puede apuntar a un `EjPerro`
+y que al llamar a `hacerSonido()` se ejecuta la versión de `EjPerro` — y que no es posible
+crear un `new EjAnimal(...)` directamente (el compilador lo rechaza).
 
----
-
-### Ejercicio 2 — Validador de email
-
-Escribe `esValido(String email)` usando solo métodos de `String` (sin regex):
-`indexOf`, `substring`, `lastIndexOf`, `contains`, `length`.
-Considera inválido: sin `@`, `@` al inicio o al final, sin punto en el dominio, espacio en cualquier posición.
-
-**Concepto:** inmutabilidad de `String`, API de métodos de `String`.
+**Concepto:** clase abstracta — no se puede instanciar directamente;
+obliga a las subclases a implementar los métodos abstractos;
+sigue soportando polimorfismo y dynamic dispatch igual que la herencia normal.
 
 ---
 
-### Ejercicio 3 — Estadísticas de un array
+### Ejercicio 8 — Describible (interfaz)
 
-Implementa `maximo`, `minimo`, `media` y `ordenadoAscendente` sobre un `int[]`.
-`ordenadoAscendente` debe devolver una copia sin modificar el array original.
-No añadas validaciones de argumentos (eso se verá en u03).
+Crea la interfaz `EjDescribible` con un único método `getDescripcion()` que devuelva un `String`.
 
-**Concepto:** recorrido de arrays, `Arrays.copyOf`, `Arrays.sort`, cast para división real.
+Implementa dos clases **sin ninguna relación de herencia entre sí** que implementen la interfaz con `implements`:
+- `EjProducto` (nombre y precio `double`): descripción `"nombre (X.XXX€)"`
+- `EjServicio` (nombre y duracionHoras `int`): descripción `"nombre (Xh)"`
 
----
+Verifica en el test que una variable de tipo `EjDescribible` puede apuntar
+tanto a un `EjProducto` como a un `EjServicio`, y que `getDescripcion()` funciona en ambos casos.
 
-### Ejercicio 4 — Agrupador de palabras
-
-Implementa `porPrimeraLetra(List<String>)` que devuelva un `Map<Character, List<String>>`
-agrupando palabras por su primera letra (en mayúscula, orden alfabético).
-Implementa `ordenarPorLongitud(List<String>)` con `Comparator`: longitud ascendente; empate por orden alfabético.
-
-**Concepto:** `TreeMap`, `ArrayList`, `Comparator`, `Collections.sort`.
+**Concepto:** interfaz como contrato — define qué debe hacer una clase, no cómo;
+permite que clases sin ninguna relación compartan el mismo tipo;
+polimorfismo por interfaz: la variable es `EjDescribible`, el objeto real puede ser cualquiera.
 
 ---
 
-### Ejercicio 5 — Par genérico
+## u02 — Tipos, estructuras de control, cadenas y colecciones
 
-Crea la clase genérica `Par<A, B>` con los dos valores y sus getters.
-Añade un factory method estático `de(A, B)` para aprovechar la inferencia de tipos.
+### Ejercicio 1 — Variables y tipos básicos
 
-**Concepto:** parámetros de tipo `<A, B>`, factory method estático genérico, seguridad de tipos en compilación.
+Crea la clase `EjTipos` con estos métodos estáticos:
+- `duplicar(int n)` → devuelve `n * 2`
+- `mitad(double d)` → devuelve `d / 2`
+- `esPar(int n)` → devuelve `true` si n es par
+- `primeraLetra(String s)` → devuelve el primer carácter (`char`)
+- `numeroATexto(int n)` → convierte el entero a `String`
+
+**Concepto:** tipos primitivos `int`, `double`, `boolean`, `char`; tipo por referencia `String`; `String.valueOf`.
 
 ---
 
-### Ejercicio 6 — Estaciones del año (enum)
+### Ejercicio 2 — Condicionales
 
-Crea el enum `Estacion` con `PRIMAVERA`, `VERANO`, `OTONO`, `INVIERNO`.
-Cada constante lleva su mes de inicio y fin. Implementa:
-- `esFria()` → true para otoño e invierno
-- `deMes(int mes)` → devuelve la estación del mes dado; devuelve `null` para mes fuera de rango (1-12)
+Crea la clase `EjCondicionales` con estos métodos estáticos:
+- `maximo(int a, int b)` → devuelve el mayor de los dos
+- `clasificarNota(int nota)` → `"Suspenso"` (<5), `"Aprobado"` (5-6), `"Notable"` (7-8), `"Sobresaliente"` (9-10)
+- `signo(int n)` → `"positivo"`, `"negativo"` o `"cero"`
 
-Nota: invierno cruza el cambio de año (diciembre → febrero).
+**Concepto:** `if / else if / else`, condiciones compuestas, cláusulas de guarda.
 
-**Concepto:** enum con campos y métodos, lógica encapsulada en la constante.
+---
+
+### Ejercicio 3 — Bucles
+
+Crea la clase `EjBucles` con estos métodos estáticos:
+- `sumar(int desde, int hasta)` → suma todos los enteros del rango (ambos inclusive), con `for`
+- `factorial(int n)` → calcula n! con `while` (sin usar `Math`)
+- `contarPares(int[] numeros)` → cuenta cuántos elementos del array son pares, con `for-each`
+
+**Concepto:** `for`, `while`, `for-each`, variable acumuladora, recorrido de array.
+
+---
+
+### Ejercicio 4 — Cadenas de caracteres
+
+Crea la clase `EjCadenas` con estos métodos estáticos:
+- `mayusculas(String s)` → convierte a mayúsculas
+- `contarCaracter(String s, char c)` → cuántas veces aparece `c` en `s`
+- `invertir(String s)` → devuelve la cadena al revés (con bucle, sin `StringBuilder`)
+- `contiene(String frase, String palabra)` → `true` si `frase` contiene `palabra` ignorando mayúsculas
+
+**Concepto:** `String.length`, `charAt`, `toUpperCase`, `toLowerCase`, `contains`; inmutabilidad de `String`.
+
+---
+
+### Ejercicio 5 — List
+
+Crea la clase `EjLista` con estos métodos estáticos:
+- `primerosN(List<String>, int n)` → devuelve los primeros `n` elementos (o todos si hay menos)
+- `filtrarPositivos(List<Integer>)` → devuelve solo los números mayores que cero (sin streams)
+- `unir(List<String>, String separador)` → une todos los elementos con el separador dado
+
+**Concepto:** `ArrayList`, `List<T>`, `add`, `get`, `size`; recorrer una lista con `for`.
+
+---
+
+### Ejercicio 6 — Map
+
+Crea la clase `EjMapa` con estos métodos estáticos:
+- `contarOcurrencias(String[] palabras)` → `Map<String, Integer>` con la frecuencia de cada palabra
+- `obtenerODefecto(Map<String, Integer>, String clave, int defecto)` → valor o defecto si no existe
+- `existeClave(Map<String, String>, String clave)` → `true` si la clave está en el mapa
+
+**Concepto:** `HashMap`, `put`, `get`, `getOrDefault`, `containsKey`.
+
+---
+
+### Ejercicio 7 — Set
+
+Crea la clase `EjConjunto` con estos métodos estáticos:
+- `sinDuplicados(List<String>)` → devuelve una nueva lista sin repetidos, preservando el orden de primera aparición
+- `tieneDuplicados(List<String>)` → `true` si la lista tiene algún elemento repetido
+- `comunes(List<Integer>, List<Integer>)` → `Set<Integer>` con los elementos presentes en las dos listas
+
+**Concepto:** `HashSet`, `add` devuelve `false` si ya existía, `contains`; Set como estructura sin duplicados.
 
 ---
 

@@ -1,5 +1,7 @@
 package com.cursosdedesarrollo.java.u01;
 
+import lombok.NoArgsConstructor;
+
 // Unidad 01 — atributos y métodos estáticos
 //
 // Un atributo  static pertenece a la CLASE: existe uno solo, compartido por
@@ -10,7 +12,14 @@ package com.cursosdedesarrollo.java.u01;
 // Lo mismo aplica a los métodos:
 //   - static  → se llama con el nombre de la clase; no tiene acceso a "this".
 //   - instancia → necesita un objeto; puede leer y modificar sus campos.
+@NoArgsConstructor(force = true)
 public class Contador {
+
+    // Atributo estático público
+    public static int valorEstatico = 0;
+
+    // Atributo constante
+    public static final int VALOR_CONSTANTE=2;
 
     // ── Atributo ESTÁTICO ────────────────────────────────────────────────────
     // totalCreados es de la clase: cuando llega a 0 objetos es 0,
