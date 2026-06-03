@@ -42,11 +42,40 @@ los atributos, los constructores, los métodos de acceso y el método `toString`
 |-------|----------|
 | `Vehiculo` | Constructores encadenados con `this(...)` — un constructor delega en otro |
 | `Producto` | Getters, setters y `toString` — convención JavaBeans, validación al escribir |
+| `Punto` | `equals` y `hashCode` — contrato de igualdad por valor (reflexivo, simétrico, transitivo) |
+| `Contador` | Atributos y métodos `static` — la diferencia entre estado de clase y estado de instancia |
 | `Persona` | Atributos de instancia vs estáticos (`static`), patrón Builder (clase anidada estática) |
 
 **Demo ejecutable:** `u01/ClasesBasicasDemo` — muestra los tres conceptos en acción con salida por consola.
 
-**Tests:** `VehiculoTest`, `ProductoTest`, `PersonaTest`
+**Tests:** `VehiculoTest`, `ProductoTest`, `PuntoTest`, `ContadorTest`, `PersonaTest`
+
+---
+
+#### `equals` y `hashCode` — `Punto`
+
+Por defecto `equals` compara referencias (si dos variables apuntan al mismo objeto).
+Sobreescribiéndolo se define **igualdad por valor**: dos objetos son iguales si sus campos relevantes coinciden.
+
+- `equals` debe cumplir: reflexivo, simétrico, transitivo y consistente con `null`.
+- `hashCode` **debe** sobreescribirse siempre que se sobreescriba `equals`: Java exige que objetos iguales produzcan el mismo hash (necesario para `HashMap`, `HashSet`…).
+- `Double.compare(a, b) == 0` en lugar de `a == b` para evitar errores de precisión de coma flotante.
+
+**Test:** `PuntoTest`
+
+---
+
+#### Atributos y métodos estáticos — `Contador`
+
+Un miembro `static` pertenece a **la clase**, no a cada instancia:
+
+- `totalCreados` es un atributo `static`: existe uno solo, compartido por todos los objetos `Contador`.
+- `getTotalCreados()` es un método `static`: se llama con `Contador.getTotalCreados()`, sin necesidad de ningún objeto.
+- `id` y `nombre` son atributos de instancia: cada `new Contador(...)` tiene su propia copia.
+
+El test usa `@Before` para resetear el estado de clase entre pruebas — consecuencia directa de que `static` persiste durante toda la JVM.
+
+**Test:** `ContadorTest`
 
 ---
 

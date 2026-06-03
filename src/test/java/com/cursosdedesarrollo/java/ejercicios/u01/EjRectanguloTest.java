@@ -7,29 +7,29 @@ public class EjRectanguloTest {
 
     @Test
     public void areaEsAnchoporAlto() {
-        assertEquals(12.0, new EjRectangulo(3, 4).area(), 0.001);
+        assertEquals((Object) 12L, new EjRectangulo(3L, 4L).area());
     }
 
     @Test
     public void perimetroEsCorrecto() {
-        assertEquals(14.0, new EjRectangulo(3, 4).perimetro(), 0.001);
+        assertEquals((Object) 14L, new EjRectangulo(3L, 4L).perimetro());
     }
 
     @Test
     public void cuadradoReconocido() {
-        assertTrue(new EjRectangulo(5, 5).esCuadrado());
-        assertFalse(new EjRectangulo(3, 4).esCuadrado());
+        assertTrue(new EjRectangulo(5L, 5L).esCuadrado());
+        assertFalse(new EjRectangulo(3L, 4L).esCuadrado());
     }
 
     @Test
     public void dimensionNegativaSeConvierteEnAbsoluta() {
-        EjRectangulo r = new EjRectangulo(-3, 4);
-        assertEquals(3.0, r.getAncho(), 0.001);
-        assertEquals(12.0, r.area(), 0.001);
+        EjRectangulo r = new EjRectangulo(-3L, 4L);
+        assertEquals((Object) 3L, r.getAncho());
+        assertEquals((Object) 12L, r.area());
     }
 
     @Test
     public void dimensionCeroProduceAreaCero() {
-        assertEquals(0.0, new EjRectangulo(0, 4).area(), 0.001);
+        assertEquals((Object) 0L, new EjRectangulo(0L, 4L).area());
     }
 }

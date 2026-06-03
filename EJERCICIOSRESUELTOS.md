@@ -50,7 +50,7 @@ Atributos `private final` — se asignan una sola vez en el constructor. En luga
 | Solución | `ejercicios/u01/EjTermostato.java` |
 | Test     | `ejercicios/u01/EjTermostatoTest.java` |
 
-El método privado `acotar(double)` centraliza la lógica de límites. Todos los puntos de entrada (`setTemperatura`, `subir`, `bajar`) lo invocan, lo que garantiza que la invariante `TEMP_MIN ≤ temperatura ≤ TEMP_MAX` nunca se rompe.
+`TEMP_MIN = 10.0` y `TEMP_MAX = 30.0` son constantes `public static final`: `static` porque pertenecen a la clase (no a cada instancia) y `final` porque su valor nunca cambia. Los tests las usan directamente (`EjTermostato.TEMP_MIN`) en lugar de repetir el literal `10.0`, de forma que si el límite cambia solo hay que tocar un sitio. El método privado `acotar(double)` centraliza la lógica: todos los puntos de entrada (`setTemperatura`, `subir`, `bajar`) lo invocan para garantizar que la temperatura nunca sale del rango.
 
 ---
 
@@ -71,6 +71,26 @@ El método privado `acotar(double)` centraliza la lógica de límites. Todos los
 | Test     | `ejercicios/u01/EjBibliotecaTest.java` |
 
 `Libro` es una clase anidada estática dentro de `EjBiblioteca` para indicar que es un componente de ella. `agregar` ignora `null` con un `if` simple. `eliminar` usa un bucle `for` con índice explícito — `removeIf(lambda)` se verá en u05. `buscarPorTitulo` devuelve `null` si no encuentra el libro — `Optional` se verá en u05. `getLibros()` devuelve `new ArrayList<>(libros)`, una copia independiente, en lugar de `Collections.unmodifiableList` que pertenece a u02.
+
+---
+
+### Ejercicio 6 — Igualdad por valor (equals y hashCode)
+| | Fichero |
+|--|---------|
+| Solución | `ejercicios/u01/EjCoordenada.java` |
+| Test     | `ejercicios/u01/EjCoordenadaTest.java` |
+
+`equals` comprueba primero identidad de referencia (`this == obj` → `true` de inmediato) y después descarta `null` y tipos distintos con `getClass()`. Solo entonces compara los campos con `Double.compare` en lugar de `==` para evitar errores de precisión de coma flotante. `hashCode` usa `Objects.hash(latitud, longitud)`: delega en la JDK la combinación de hashes, garantizando que dos objetos iguales produzcan siempre el mismo valor. El test verifica explícitamente cada cláusula del contrato: reflexividad, simetría, transitividad, comparación con `null` y con tipo distinto. El ejemplo de referencia con el que comparar la solución es `u01/Punto.java`.
+
+---
+
+### Ejercicio 7 — Atributos y métodos estáticos
+| | Fichero |
+|--|---------|
+| Solución | `ejercicios/u01/EjSesion.java` |
+| Test     | `ejercicios/u01/EjSesionTest.java` |
+
+`totalSesiones` es `private static`: existe un único ejemplar compartido por todas las instancias. Se incrementa en el constructor, de modo que el `id` de cada objeto queda fijado en el momento de su creación (`final`). `getTotalSesiones()` y `resetear()` son `static` — se llaman con el nombre de la clase, sin objeto. El test usa `@Before` con `resetear()` para aislar cada prueba: sin ese reset, el orden de ejecución afectaría al valor del contador y los tests serían frágiles. El ejemplo de referencia es `u01/Contador.java`.
 
 ---
 

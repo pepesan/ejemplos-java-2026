@@ -33,20 +33,22 @@ No uses `if` ni condiciones de ningún tipo.
 ### Ejercicio 1 — Rectángulo
 
 Crea la clase `Rectangulo` con atributos `ancho` y `alto`.
-Implementa `area()`, `perimetro()`, `esCuadrado()` y `toString()`.
-Si se pasa una dimensión negativa, el constructor debe usar su valor absoluto (`Math.abs`).
+Implementa Constructores, getters y setters y `toString()`.
 
-**Concepto:** clase, atributos `private final`, constructor, `Math.abs`, métodos derivados.
+Si puedes implementa las pruebas con Junit sino haz una clase Main.
+
+**Concepto:** clase, atributos, constructor, getters, setters y toString.
 
 ---
 
 ### Ejercicio 2 — Termostato (encapsulamiento)
 
-Crea la clase `Termostato` con una temperatura interna.
+Crea la clase `Termostato` con una temperatura interna que **siempre** debe estar entre `10.0 °C` y `30.0 °C`.
+Define esos límites como constantes de clase (`public static final double TEMP_MIN` y `TEMP_MAX`).
+Implementa `setTemperatura`, `getTemperatura`, `subir(double grados)` y `bajar(double grados)`.
+Cualquier valor fuera del rango debe quedar acotado al límite más cercano, sin lanzar excepción.
 
-Implementa `setTemperatura`, `getTemperatura`, `subir` y `bajar`.
-
-**Concepto:** encapsulamiento — la invariante del estado nunca puede romperse desde fuera.
+**Concepto:** encapsulamiento — la invariante del estado nunca puede romperse desde fuera; constantes de clase `static final`.
 
 ---
 
@@ -71,6 +73,39 @@ y buscar por título devolviendo el `Libro` encontrado o `null` si no existe.
 No uses lambdas ni `removeIf` (eso se verá en u05), ni `Collections.unmodifiableList` (u02).
 
 **Concepto:** composición ("tiene-un"), bucle de búsqueda y eliminación, devolver copia de colección.
+
+---
+
+### Ejercicio 6 — Igualdad por valor (equals y hashCode)
+
+Crea la clase `Coordenada` con `latitud` y `longitud` (`double`).
+Implementa constructores, getters, setters y `toString`.
+Sobreescribe `equals` para que dos coordenadas sean iguales si tienen la misma latitud y longitud,
+y sobreescribe `hashCode` de forma coherente.
+
+Verifica en el test que `equals` es reflexivo, simétrico y transitivo,
+que devuelve `false` al comparar con `null` y con un objeto de distinto tipo,
+y que objetos iguales producen el mismo `hashCode`.
+
+No uses `==` para comparar `double` — usa `Double.compare(a, b) == 0`.
+
+**Concepto:** igualdad por valor, contrato `equals`/`hashCode`, uso en `HashMap` y `HashSet`.
+
+---
+
+### Ejercicio 7 — Atributos y métodos estáticos
+
+Crea la clase `Sesion` que representa una sesión de usuario abierta en el sistema.
+- Define un atributo `static` `totalSesiones` que se incrementa con cada nueva sesión.
+- Cada instancia tiene un `id` único (auto-asignado desde el contador) y un `usuario` (`String`).
+- Añade el método estático `getTotalSesiones()` y el método de instancia `getUsuario()`.
+- Añade `resetear()` estático para que los tests puedan limpiar el estado entre ejecuciones.
+
+Comprueba en el test que crear varias instancias incrementa el total, que cada instancia
+tiene su propio `id`, y que modificar una instancia no afecta a las demás.
+
+**Concepto:** atributo `static` como estado compartido de clase vs atributo de instancia;
+método `static` que no necesita `this`.
 
 ---
 
