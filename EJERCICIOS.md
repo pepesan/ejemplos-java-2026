@@ -93,19 +93,30 @@ No uses `==` para comparar `double` — usa `Double.compare(a, b) == 0`.
 
 ---
 
-### Ejercicio 7 — Atributos y métodos estáticos
+### Ejercicio 7 — Atributos y métodos estáticos: aparcamiento
 
-Crea la clase `Sesion` que representa una sesión de usuario abierta en el sistema.
-- Define un atributo `static` `totalSesiones` que se incrementa con cada nueva sesión.
-- Cada instancia tiene un `id` único (auto-asignado desde el contador) y un `usuario` (`String`).
-- Añade el método estático `getTotalSesiones()` y el método de instancia `getUsuario()`.
-- Añade `resetear()` estático para que los tests puedan limpiar el estado entre ejecuciones.
+Crea la clase `Parking` que gestiona las plazas de un aparcamiento con capacidad fija.
 
-Comprueba en el test que crear varias instancias incrementa el total, que cada instancia
-tiene su propio `id`, y que modificar una instancia no afecta a las demás.
+- Define la constante `public static final int CAPACIDAD = 5`.
+- Define el atributo estático `static int plazasOcupadas` (inicialmente 0).
+- Método estático `getPlazasLibres()` → devuelve `CAPACIDAD - plazasOcupadas`.
+- Método estático `hayPlazas()` → devuelve `true` si quedan plazas libres.
+- Cada instancia representa un vehículo con su `matricula` (`String`).
+- `entrar()` → si hay plazas, incrementa `plazasOcupadas` y devuelve `true`; si no hay, devuelve `false`.
+- `salir()` → si `plazasOcupadas > 0`, decrementa `plazasOcupadas`.
+- Añade `resetear()` estático para aislar los tests entre sí.
 
-**Concepto:** atributo `static` como estado compartido de clase vs atributo de instancia;
-método `static` que no necesita `this`.
+No uses excepciones para indicar que no hay plazas (eso se verá en u03): usa el `boolean` de retorno.
+
+Verifica con JUnit que:
+- Sin vehículos hay `CAPACIDAD` plazas libres y `hayPlazas()` devuelve `true`.
+- Cada `entrar()` exitoso reduce las plazas libres en uno.
+- Al alcanzar la capacidad, `hayPlazas()` devuelve `false` y un nuevo `entrar()` devuelve `false`.
+- `salir()` incrementa las plazas libres en uno.
+
+**Concepto:** atributo `static` como recurso compartido por todas las instancias;
+constante `static final`; métodos estáticos que consultan estado de clase sin necesitar objeto;
+métodos de instancia que modifican ese estado compartido.
 
 ---
 

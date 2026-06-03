@@ -40,7 +40,7 @@ Cuatro métodos estáticos — `sumar`, `restar`, `multiplicar`, `dividir` —, 
 | Solución | `ejercicios/u01/EjRectangulo.java` |
 | Test     | `ejercicios/u01/EjRectanguloTest.java` |
 
-Atributos `private final` — se asignan una sola vez en el constructor. En lugar de lanzar excepción para dimensiones negativas (concepto de u03), el constructor usa `Math.abs` para convertirlas en positivas. `esCuadrado()` usa `Double.compare` para comparar doubles con precisión.
+Atributos `private Long` — tipo envoltorio en lugar del primitivo `long`, lo que permite usar `null` como valor ausente y pasar instancias donde se espera `Object`. Los atributos no son `final` para que los setters puedan modificarlos. El constructor asigna directamente sin validación — las reglas de negocio (dimensiones positivas, etc.) se añadirían en u03 con excepciones. El test usa `assertEquals((Object) 3L, ...)` para forzar la sobrecarga `assertEquals(Object, Object)` de JUnit y evitar la ambigüedad con `assertEquals(long, long)` al comparar objetos `Long`.
 
 ---
 
@@ -74,6 +74,16 @@ Atributos `private final` — se asignan una sola vez en el constructor. En luga
 
 ---
 
+### Ejercicio 5 — Conversor (sobrecarga)
+| | Fichero |
+|--|---------|
+| Solución | `ejercicios/u01/EjConversor.java` |
+| Test     | `ejercicios/u01/EjConversorTest.java` |
+
+Las tres versiones de `convertir` tienen firmas distintas (1, 2 y 3 parámetros). El compilador resuelve cuál usar en tiempo de compilación según los argumentos de la llamada — no hay ambigüedad ni decisión en tiempo de ejecución.
+
+---
+
 ### Ejercicio 6 — Igualdad por valor (equals y hashCode)
 | | Fichero |
 |--|---------|
@@ -84,23 +94,13 @@ Atributos `private final` — se asignan una sola vez en el constructor. En luga
 
 ---
 
-### Ejercicio 7 — Atributos y métodos estáticos
+### Ejercicio 7 — Atributos y métodos estáticos: aparcamiento
 | | Fichero |
 |--|---------|
-| Solución | `ejercicios/u01/EjSesion.java` |
-| Test     | `ejercicios/u01/EjSesionTest.java` |
+| Solución | `ejercicios/u01/EjParking.java` |
+| Test     | `ejercicios/u01/EjParkingTest.java` |
 
-`totalSesiones` es `private static`: existe un único ejemplar compartido por todas las instancias. Se incrementa en el constructor, de modo que el `id` de cada objeto queda fijado en el momento de su creación (`final`). `getTotalSesiones()` y `resetear()` son `static` — se llaman con el nombre de la clase, sin objeto. El test usa `@Before` con `resetear()` para aislar cada prueba: sin ese reset, el orden de ejecución afectaría al valor del contador y los tests serían frágiles. El ejemplo de referencia es `u01/Contador.java`.
-
----
-
-### Ejercicio 5 — Conversor (sobrecarga)
-| | Fichero |
-|--|---------|
-| Solución | `ejercicios/u01/EjConversor.java` |
-| Test     | `ejercicios/u01/EjConversorTest.java` |
-
-Las tres versiones de `convertir` tienen firmas distintas (1, 2 y 3 parámetros). El compilador resuelve cuál usar en tiempo de compilación según los argumentos de la llamada — no hay ambigüedad ni decisión en tiempo de ejecución.
+`CAPACIDAD` es `public static final`: constante de clase accesible sin objeto y usada directamente en los tests (`EjParking.CAPACIDAD`) para que no haya "números mágicos". `plazasOcupadas` es `private static`: un único valor compartido por todos los objetos — cuando un vehículo entra o sale, todos los objetos ven el cambio. `entrar()` devuelve `boolean` en lugar de lanzar excepción (las excepciones son u03): el llamador sabe si la operación tuvo éxito. El test usa `@Before` con `resetear()` para que cada prueba parta de un aparcamiento vacío — sin ese reset el estado estático se acumula entre tests y los resultados dependerían del orden de ejecución. El ejemplo de referencia es `u01/Contador.java`.
 
 ---
 
