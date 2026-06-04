@@ -104,7 +104,17 @@ Las tres versiones de `convertir` tienen firmas distintas (1, 2 y 3 parámetros)
 
 ---
 
-### Ejercicio 9 — Describible (interfaz)
+### Ejercicio 10 — Vehículo (clase abstracta sencilla)
+| | Fichero |
+|--|---------|
+| Solución | `ejercicios/u01/EjVehiculo.java`, `ejercicios/u01/EjCoche.java`, `ejercicios/u01/EjBicicleta.java` |
+| Test     | `ejercicios/u01/EjVehiculoTest.java` |
+
+`EjVehiculo` es la versión mínima de una clase abstracta: un único atributo (`marca`), un getter heredado y un solo método abstracto (`moverme()`). Las subclases `EjCoche` y `EjBicicleta` solo tienen constructor y `@Override moverme()` — nada más. La diferencia con `EjFigura` (Ejercicio 3) es que aquí el compilador **no puede** proporcionar un valor por defecto: si una subclase no implementa `moverme()`, el compilador la marca también como abstracta y la impide instanciar. El test `variableAbstractaEjecutaMetodoDelSubtipo` repite el mismo concepto de dynamic dispatch que en ejercicios anteriores, aplicado ahora a una clase abstracta.
+
+---
+
+### Ejercicio 11 — Describible (interfaz)
 | | Fichero |
 |--|---------|
 | Solución | `ejercicios/u01/EjDescribible.java`, `ejercicios/u01/EjProducto.java`, `ejercicios/u01/EjServicio.java` |

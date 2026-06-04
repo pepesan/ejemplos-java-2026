@@ -141,7 +141,27 @@ sigue soportando polimorfismo y dynamic dispatch igual que la herencia normal.
 
 ---
 
-### Ejercicio 8 — Describible (interfaz)
+### Ejercicio 9 — Vehículo (clase abstracta sencilla)
+
+Crea la clase **abstracta** `Vehiculo` con un atributo `marca` (`String`),
+su getter y un método abstracto `moverme()` que devuelva un `String`.
+
+Implementa las subclases `Coche` y `Bicicleta` con `extends Vehiculo`,
+cada una sobrescribiendo `moverme()` con `@Override`:
+- `Coche.moverme()` → `"Con motor"`
+- `Bicicleta.moverme()` → `"Con pedales"`
+
+Verifica en el test que una variable de tipo `Vehiculo` puede apuntar a un `Coche`
+y que al llamar a `moverme()` se ejecuta la versión de `Coche`.
+
+**Concepto:** clase abstracta en su forma más mínima — un atributo heredado,
+un único método abstracto y dos subclases concretas.
+La diferencia con la herencia normal (Ejercicio 3) es que el compilador
+**no permite** que una subclase olvide implementar `moverme()`.
+
+---
+
+### Ejercicio 10 — Describible (interfaz)
 
 Crea la interfaz `EjDescribible` con un único método `getDescripcion()` que devuelva un `String`.
 
