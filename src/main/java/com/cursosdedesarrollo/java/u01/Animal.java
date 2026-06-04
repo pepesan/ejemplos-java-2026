@@ -8,7 +8,15 @@ public class Animal {
         this.nombre = nombre;
     }
 
-    public String getNombre() { return nombre; }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        if (nombre != null || !nombre.equals("")) {
+            this.nombre = nombre;
+        }
+    }
 
     public String hacerSonido() { return "..."; }
 }

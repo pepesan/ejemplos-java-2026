@@ -9,6 +9,18 @@ public class Perro extends Animal {
         this.raza = raza;
     }
 
+    public String getRaza() {
+        return raza;
+    }
+    public void setRaza(String raza) {
+        this.raza = raza;
+    }
+
+    @Override
+    public String getNombre() {
+        return this.getNombre();
+    }
+
     @Override
     public String hacerSonido() { return "Guau!"; }
 }
