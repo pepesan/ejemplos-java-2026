@@ -7,6 +7,15 @@ import static org.junit.Assert.*;
 public class ArraysTest {
 
     @Test
+    public void testArraysAcceso() {
+        int[] notas = {7, 8, 6, 9, 5};
+        assertEquals(7, notas[0]);
+        assertEquals(8, notas[1]);
+        assertEquals(5, notas[4]);
+        notas[4] = 8;
+        assertEquals(8, notas[4]);
+    }
+    @Test
     public void mediaDeNotasCorrectamente() {
         int[] notas = {7, 8, 6, 9, 5};
         int suma = 0;

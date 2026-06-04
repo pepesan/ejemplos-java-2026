@@ -18,7 +18,7 @@ public class Perro extends Animal {
 
     @Override
     public String getNombre() {
-        return this.getNombre();
+        return super.getNombre();
     }
 
     @Override
