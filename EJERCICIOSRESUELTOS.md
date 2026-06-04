@@ -142,7 +142,7 @@ Las tres versiones de `convertir` tienen firmas distintas (1, 2 y 3 parámetros)
 | Solución | `ejercicios/u02/EjTipos.java` |
 | Test     | `ejercicios/u02/EjTiposTest.java` |
 
-Cada método devuelve un tipo distinto: `int`, `double`, `boolean`, `char` y `String`. `esPar` usa el operador módulo (`% 2 == 0`). `primeraLetra` introduce `charAt(0)` como la forma más directa de obtener un carácter concreto. `String.valueOf(n)` es la conversión canónica de primitivo a `String`, preferible a concatenar con `""`.
+Tres métodos, cada uno con un tipo de retorno distinto: `int`, `double` y `boolean`. `esPar` usa el operador módulo (`% 2 == 0`): si el resto de dividir entre 2 es cero, el número es par.
 
 ---
 
@@ -162,7 +162,7 @@ Cada método devuelve un tipo distinto: `int`, `double`, `boolean`, `char` y `St
 | Solución | `ejercicios/u02/EjBucles.java` |
 | Test     | `ejercicios/u02/EjBuclesTest.java` |
 
-`sumar` usa `for` clásico con índice — el acumulador `total` empieza en 0 y suma cada valor del rango. `factorial` usa `while` con la variable `i` que decrece: muestra que `for` y `while` son intercambiables, pero `while` es más natural cuando la condición de salida no es un contador simple. `contarPares` usa `for-each` que es la forma idiomática de recorrer un array cuando no se necesita el índice.
+`sumar` usa `for` clásico con índice — el acumulador `total` empieza en 0 y suma cada valor del rango. `factorial` usa `while` con la variable `i` que decrece: muestra que `for` y `while` son intercambiables, pero `while` es más natural cuando la condición de salida no es un contador simple.
 
 ---
 

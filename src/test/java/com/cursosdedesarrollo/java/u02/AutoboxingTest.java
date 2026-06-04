@@ -8,6 +8,46 @@ import static org.junit.Assert.*;
 public class AutoboxingTest {
 
     @Test
+    public void defineObjetoDeClaseInteger() {
+        Integer i = 17;
+        i = new Integer(17);
+        int i2 = 17;
+        assertEquals((Integer) i2, i);
+    }
+
+    @Test
+    public void defineObjetoDeClaseLong() {
+        Long l = 17L;
+        l = new Long(17L);
+        long l2 = 17;
+        assertEquals((Long) l2, l);
+    }
+
+    @Test
+    public void defineObjetoDeClaseDouble() {
+        Double d = 17.0;
+        d = new Double(17.0);
+        double d2 = 17.0;
+        assertEquals((Double) d2, d);
+    }
+    @Test
+    public void defineObjetoDeClaseFloat() {
+        Float f = 17.0F;
+        f = new Float(17.0F);
+        float f2 = 17.0F;
+        assertEquals((Float) f2, f);
+    }
+
+    // test de Boolean
+    @Test
+    public void defineObjetoDeClaseBoolean() {
+        Boolean b = true;
+        b = new Boolean(true);
+        boolean b2 = true;
+        assertEquals((Boolean) b2, b);
+    }
+
+    @Test
     public void autoboxingIntAInteger() {
         List<Integer> nums = new ArrayList<>();
         nums.add(1); // autoboxing

@@ -30,13 +30,4 @@ public class EjTiposTest {
         assertFalse(EjTipos.esPar(7));
     }
 
-    @Test
-    public void primeraLetraDevuelveElPrimerCaracter() {
-        assertEquals('H', EjTipos.primeraLetra("Hola"));
-    }
-
-    @Test
-    public void numeroATextoConvierteInt() {
-        assertEquals("42", EjTipos.numeroATexto(42));
-    }
 }

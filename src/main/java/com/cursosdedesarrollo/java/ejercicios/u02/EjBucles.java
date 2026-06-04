@@ -21,12 +21,4 @@ public class EjBucles {
         return resultado;
     }
 
-    // Cuenta cuántos números del array son pares.
-    public static int contarPares(int[] numeros) {
-        int cuenta = 0;
-        for (int num : numeros) {
-            if (num % 2 == 0) cuenta++;
-        }
-        return cuenta;
-    }
 }

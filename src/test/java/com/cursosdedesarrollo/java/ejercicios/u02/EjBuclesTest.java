@@ -34,20 +34,4 @@ public class EjBuclesTest {
         assertEquals(120L, EjBucles.factorial(5));
     }
 
-    // ── contarPares ──────────────────────────────────────────────────────────
-
-    @Test
-    public void contarParesEnArrayMixto() {
-        assertEquals(3, EjBucles.contarPares(new int[]{1, 2, 3, 4, 5, 6}));
-    }
-
-    @Test
-    public void contarParesEnArraySinPares() {
-        assertEquals(0, EjBucles.contarPares(new int[]{1, 3, 5}));
-    }
-
-    @Test
-    public void contarParesArrayVacio() {
-        assertEquals(0, EjBucles.contarPares(new int[]{}));
-    }
 }

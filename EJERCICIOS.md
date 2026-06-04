@@ -186,8 +186,6 @@ Crea la clase `EjTipos` con estos métodos estáticos:
 - `duplicar(int n)` → devuelve `n * 2`
 - `mitad(double d)` → devuelve `d / 2`
 - `esPar(int n)` → devuelve `true` si n es par
-- `primeraLetra(String s)` → devuelve el primer carácter (`char`)
-- `numeroATexto(int n)` → convierte el entero a `String`
 
 **Concepto:** tipos primitivos `int`, `double`, `boolean`, `char`; tipo por referencia `String`; `String.valueOf`.
 
@@ -209,9 +207,8 @@ Crea la clase `EjCondicionales` con estos métodos estáticos:
 Crea la clase `EjBucles` con estos métodos estáticos:
 - `sumar(int desde, int hasta)` → suma todos los enteros del rango (ambos inclusive), con `for`
 - `factorial(int n)` → calcula n! con `while` (sin usar `Math`)
-- `contarPares(int[] numeros)` → cuenta cuántos elementos del array son pares, con `for-each`
 
-**Concepto:** `for`, `while`, `for-each`, variable acumuladora, recorrido de array.
+**Concepto:** `for`, `while`.
 
 ---
 
