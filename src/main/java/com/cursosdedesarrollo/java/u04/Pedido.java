@@ -1,7 +1,11 @@
 package com.cursosdedesarrollo.java.u04;
 
+import java.io.Serializable;
+
 // Unidad 04 — Modelo de dominio para el ejemplo JDBC con MySQL
-public class Pedido {
+public class Pedido  implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public enum Estado { PENDIENTE, PROCESADO, CANCELADO }
 

@@ -38,7 +38,7 @@ public class PedidoRepositoryMysqlTest {
         // Limpia los pedidos de test anteriores para que los tests sean repetibles
         try (var conn = ds.getConnection();
              var st = conn.createStatement()) {
-            st.execute("DELETE FROM pedidos WHERE referencia LIKE 'TEST-%'");
+            st.execute("DELETE FROM pedidos");
         }
     }
 
@@ -66,10 +66,21 @@ public class PedidoRepositoryMysqlTest {
 
     @Test
     public void findAllDevuelveAlMenosLosPedidosInsertados() throws SQLException {
-        repo.save(new Pedido("TEST-003", "Pedido A", 10.0));
-        repo.save(new Pedido("TEST-004", "Pedido B", 20.0));
+        long id1 = repo.save(new Pedido("TEST-003", "Pedido A", 10.0));
+        long id2 =repo.save(new Pedido("TEST-004", "Pedido B", 20.0));
         List<Pedido> lista = repo.findAll();
         assertTrue("Debe haber al menos 2 pedidos", lista.size() >= 2);
+        assertEquals(2, lista.size());
+        Pedido p = lista.getFirst();
+        assertEquals((Object) id1,p.getId());
+        assertEquals("TEST-003", p.getReferencia());
+        assertEquals("Pedido A", p.getDescripcion());
+        assertEquals((Object) 10.0, p.getTotal());
+        p = lista.get(1);
+        assertEquals((Object) id2,p.getId());
+        assertEquals("TEST-004", p.getReferencia());
+        assertEquals("Pedido B", p.getDescripcion());
+        assertEquals((Object) 20.0, p.getTotal());
     }
 
     @Test
