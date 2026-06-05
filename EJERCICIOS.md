@@ -296,6 +296,35 @@ El repositorio recibe un `DataSource` por constructor. Usa `PreparedStatement` y
 
 **Concepto:** JDBC completo (Connection, PreparedStatement, ResultSet, claves generadas), row mapper, inyección de DataSource.
 
+### Ejercicio 2 — Repositorio de alumnos con MySQL
+
+**Requisito previo:** levanta el entorno con `docker/01-up.sh` antes de ejecutar los tests.
+
+Crea `EjAlumno` (id, nombre, apellidos, email, curso) y `EjAlumnoRepository` que conecte contra la base de datos MySQL `cursodb` (tabla `alumnos`, ver `docker/init.sql`) con:
+- `save(EjAlumno)` → devuelve la PK generada
+- `findById(long)` → `Optional<EjAlumno>`
+- `findAll()` → `List<EjAlumno>`
+- `findByCurso(String curso)` → `List<EjAlumno>` con los alumnos de ese curso
+- `updateCurso(long id, String nuevoCurso)` → actualiza el curso del alumno
+- `deleteById(long id)`
+
+El repositorio recibe un `DataSource` por constructor. Usa `MysqlDataSource` para configurar la conexión:
+```java
+MysqlDataSource ds = new MysqlDataSource();
+ds.setURL("jdbc:mysql://localhost:3306/cursodb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
+ds.setUser("root");
+ds.setPassword("root");
+```
+
+En los tests, limpia sólo las filas propias (usa un prefijo único en el email, p. ej. `test.`) para no interferir con los datos de ejemplo del `init.sql`.
+
+Marca los tests con `@Ignore` y quítalo manualmente cuando el contenedor esté levantado:
+```bash
+mvn test -Dtest=EjAlumnoRepositoryTest
+```
+
+**Conceptos:** `MysqlDataSource`, columna `UNIQUE` en email, `PreparedStatement`, `try-with-resources`, row mapper, `@Ignore` para tests de integración.
+
 ---
 
 ## u05 — Programación funcional y Java 8

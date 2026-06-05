@@ -16,6 +16,8 @@ public class ClienteRepositoryTest {
     public void setUp() throws SQLException {
         JdbcDataSource ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1");
+        ds.setUser("sa");
+        ds.setPassword("");
 
         try (Connection conn = ds.getConnection();
              Statement st = conn.createStatement()) {

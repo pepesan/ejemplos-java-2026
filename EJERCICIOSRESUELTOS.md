@@ -242,6 +242,17 @@ El contador de intentos solo se incrementa en el bloque de excepción y se reini
 
 Sigue el mismo patrón que `ClienteRepository`: `DataSource` inyectado, `PreparedStatement` con `?` para evitar SQL injection, `try-with-resources` en cada método y un row mapper privado que convierte `ResultSet` → `EjProducto`. El test crea y destruye la tabla en `@Before` para garantizar aislamiento.
 
+### Ejercicio 2 — Repositorio de alumnos con MySQL
+| | Fichero |
+|--|---------|
+| Entidad  | `ejercicios/u04/EjAlumno.java` |
+| Solución | `ejercicios/u04/EjAlumnoRepository.java` |
+| Test     | `ejercicios/u04/EjAlumnoRepositoryTest.java` (MySQL — `@Ignore` por defecto) |
+
+Sigue el mismo patrón que `PedidoRepository` pero conectando contra MySQL real en lugar de H2. La diferencia principal respecto al ejercicio 1 es el `DataSource`: aquí se usa `MysqlDataSource` configurado con URL, usuario y contraseña. El test limpia sólo las filas con `email LIKE 'test.%'` antes de cada caso para poder repetirlos sin vaciar la tabla entera — patrón habitual en tests de integración contra BBDD compartidas.
+
+`findByCurso` y `updateCurso` demuestran el filtrado por `WHERE` y la modificación parcial con `UPDATE`, análogos a `findByEstado` / `updateEstado` del ejemplo `PedidoRepository`.
+
 ---
 
 ## u05 — Programación funcional y Java 8

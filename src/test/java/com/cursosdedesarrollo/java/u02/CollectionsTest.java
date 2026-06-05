@@ -67,6 +67,46 @@ public class CollectionsTest {
         lista.removeFirst();
         assertEquals("centro", lista.getFirst());
     }
+    // Ejemplo de clase personalizada
+    @Test
+    public void linkedListTipoPersonalizado() {
+        // LinkedList: List doblemente enlazada; inserción/borrado en extremos O(1).
+        List<Perro> lista = new LinkedList<>();
+        Perro p = new Perro("Podenco");
+        lista.add(p);
+
+        assertEquals(p, lista.getFirst());
+        assertEquals(p, lista.getLast());
+        assertEquals(1, lista.size());
+
+        lista.removeFirst();
+        assertEquals(0, lista.size());
+    }
+
+    // ── Recorrer List ────────────────────────────────────────────────────────
+
+    @Test
+    public void recorrerListConFor() {
+        // for clásico: útil cuando necesitamos el índice (p.ej. para acceder al elemento anterior).
+        List<String> nombres = Arrays.asList("Ana", "Bob", "Carlos");
+        StringBuilder resultado = new StringBuilder();
+        for (int i = 0; i < nombres.size(); i++) {
+            resultado.append(nombres.get(i));
+            if (i < nombres.size() - 1) resultado.append(", ");
+        }
+        assertEquals("Ana, Bob, Carlos", resultado.toString());
+    }
+
+    @Test
+    public void recorrerListConForEach() {
+        // for-each: la forma más limpia cuando no necesitamos el índice.
+        List<String> nombres = Arrays.asList("Ana", "Bob", "Carlos");
+        List<String> mayusculas = new ArrayList<>();
+        for (String nombre : nombres) {
+            mayusculas.add(nombre.toUpperCase());
+        }
+        assertEquals(Arrays.asList("ANA", "BOB", "CARLOS"), mayusculas);
+    }
 
     // ── Map básico ───────────────────────────────────────────────────────────
 
@@ -77,6 +117,9 @@ public class CollectionsTest {
         mapa.put("manzana", 3);
         mapa.put("pera", 5);
         mapa.put("manzana", 10); // sobreescribe el valor anterior
+        // No puedo meter como valor o clave un tipo no definido
+        //mapa.put("pera", "hola");
+        //mapa.put(5, 5);
 
         assertEquals(2, mapa.size());
         assertEquals(Integer.valueOf(10), mapa.get("manzana"));
@@ -101,6 +144,76 @@ public class CollectionsTest {
 
         capitales.putIfAbsent("España", "Barcelona"); // no sobreescribe porque ya existe
         assertEquals("Madrid", capitales.get("España"));
+    }
+
+    // Mapa de tipo personalizado
+    @Test
+    public void hashMapTipoPersonalizado() {
+        // HashMap: implementación de Map con tabla hash; orden de claves no garantizado.
+        HashMap<String, Perro> perros = new HashMap<>();
+        Perro p = new Perro("Podenco");
+        perros.put("Chari", p);
+
+        assertEquals(p, perros.get("Chari"));
+        assertTrue(perros.containsValue(p));
+        Perro bosco = new Perro("Labrador");
+        perros.putIfAbsent("David", bosco); // no sobreescribe porque ya existe
+        assertEquals(bosco, perros.get("David"));
+    }
+
+    // Mapa de dos tipos personalizados
+    @Test
+    public void hashMapTiposPersonalizados() {
+        // HashMap: implementación de Map con tabla hash; orden de claves no garantizado.
+        HashMap<Persona, Perro> perros = new HashMap<>();
+        Perro p = new Perro("Podenco");
+        Persona chari = new Persona("Chari");
+        perros.put(chari, p);
+
+        assertEquals(p, perros.get(chari));
+        assertTrue(perros.containsValue(p));
+        Perro bosco = new Perro("Labrador");
+        Persona david = new Persona("David");
+        perros.putIfAbsent(david, bosco); // no sobreescribe porque ya existe
+        assertEquals(bosco, perros.get(david));
+    }
+
+    // ── Recorrer Map ─────────────────────────────────────────────────────────
+
+    @Test
+    public void recorrerMapPorClaves() {
+        // keySet(): cuando solo necesitamos las claves.
+        Map<String, Integer> edades = new LinkedHashMap<>();
+        edades.put("Ana", 30); edades.put("Bob", 25);
+        List<String> claves = new ArrayList<>();
+        for (String clave : edades.keySet()) {
+            claves.add(clave);
+        }
+        assertEquals(Arrays.asList("Ana", "Bob"), claves);
+    }
+
+    @Test
+    public void recorrerMapPorValores() {
+        // values(): cuando solo necesitamos los valores.
+        Map<String, Integer> edades = new LinkedHashMap<>();
+        edades.put("Ana", 30); edades.put("Bob", 25);
+        List<Integer> valores = new ArrayList<>();
+        for (int valor : edades.values()) {
+            valores.add(valor);
+        }
+        assertEquals(Arrays.asList(30, 25), valores);
+    }
+
+    @Test
+    public void recorrerMapPorEntradas() {
+        // entrySet(): cuando necesitamos clave Y valor a la vez — la forma más completa.
+        Map<String, Integer> edades = new LinkedHashMap<>();
+        edades.put("Ana", 30); edades.put("Bob", 25);
+        List<String> resumen = new ArrayList<>();
+        for (Map.Entry<String, Integer> entrada : edades.entrySet()) {
+            resumen.add(entrada.getKey() + "=" + entrada.getValue());
+        }
+        assertEquals(Arrays.asList("Ana=30", "Bob=25"), resumen);
     }
 
     // ── Set básico ───────────────────────────────────────────────────────────
@@ -162,30 +275,7 @@ public class CollectionsTest {
         assertTrue(antesDeCarlos.contains("Beatriz"));
     }
 
-    // ── Recorrer List ────────────────────────────────────────────────────────
 
-    @Test
-    public void recorrerListConFor() {
-        // for clásico: útil cuando necesitamos el índice (p.ej. para acceder al elemento anterior).
-        List<String> nombres = Arrays.asList("Ana", "Bob", "Carlos");
-        StringBuilder resultado = new StringBuilder();
-        for (int i = 0; i < nombres.size(); i++) {
-            resultado.append(nombres.get(i));
-            if (i < nombres.size() - 1) resultado.append(", ");
-        }
-        assertEquals("Ana, Bob, Carlos", resultado.toString());
-    }
-
-    @Test
-    public void recorrerListConForEach() {
-        // for-each: la forma más limpia cuando no necesitamos el índice.
-        List<String> nombres = Arrays.asList("Ana", "Bob", "Carlos");
-        List<String> mayusculas = new ArrayList<>();
-        for (String nombre : nombres) {
-            mayusculas.add(nombre.toUpperCase());
-        }
-        assertEquals(Arrays.asList("ANA", "BOB", "CARLOS"), mayusculas);
-    }
 
     // ── Recorrer Set ─────────────────────────────────────────────────────────
 
@@ -201,43 +291,7 @@ public class CollectionsTest {
         assertEquals(3, contador);
     }
 
-    // ── Recorrer Map ─────────────────────────────────────────────────────────
 
-    @Test
-    public void recorrerMapPorClaves() {
-        // keySet(): cuando solo necesitamos las claves.
-        Map<String, Integer> edades = new LinkedHashMap<>();
-        edades.put("Ana", 30); edades.put("Bob", 25);
-        List<String> claves = new ArrayList<>();
-        for (String clave : edades.keySet()) {
-            claves.add(clave);
-        }
-        assertEquals(Arrays.asList("Ana", "Bob"), claves);
-    }
-
-    @Test
-    public void recorrerMapPorValores() {
-        // values(): cuando solo necesitamos los valores.
-        Map<String, Integer> edades = new LinkedHashMap<>();
-        edades.put("Ana", 30); edades.put("Bob", 25);
-        List<Integer> valores = new ArrayList<>();
-        for (int valor : edades.values()) {
-            valores.add(valor);
-        }
-        assertEquals(Arrays.asList(30, 25), valores);
-    }
-
-    @Test
-    public void recorrerMapPorEntradas() {
-        // entrySet(): cuando necesitamos clave Y valor a la vez — la forma más completa.
-        Map<String, Integer> edades = new LinkedHashMap<>();
-        edades.put("Ana", 30); edades.put("Bob", 25);
-        List<String> resumen = new ArrayList<>();
-        for (Map.Entry<String, Integer> entrada : edades.entrySet()) {
-            resumen.add(entrada.getKey() + "=" + entrada.getValue());
-        }
-        assertEquals(Arrays.asList("Ana=30", "Bob=25"), resumen);
-    }
 
     @Test
     public void listPermiteDuplicados() {

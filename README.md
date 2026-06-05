@@ -324,6 +324,58 @@ Es una excepción **unchecked** — el compilador no la detecta.
 
 ## u04 — JDBC
 
+### Entorno MySQL con Docker
+
+Antes de ejecutar los tests de MySQL es necesario levantar los contenedores:
+
+```bash
+cd docker
+./01-up.sh                        # levanta MySQL 8.4 y phpMyAdmin
+./02-ps.sh                        # muestra el estado de los contenedores
+./03-logs.sh                      # logs en tiempo real (Ctrl+C para salir)
+./04-down.sh                      # para y elimina contenedores y volumen
+./05-bash.sh                      # abre una shell bash dentro del contenedor
+./06-exec-sql.sh script.sql       # ejecuta un fichero SQL (base: cursodb)
+./06-exec-sql.sh script.sql otradb# ejecuta un fichero SQL en otra base de datos
+./07-mysql.sh                     # cliente mysql interactivo en cursodb
+./07-mysql.sh otradb              # cliente mysql interactivo en otra base de datos
+```
+
+| Servicio    | URL / puerto            | Credenciales       |
+|-------------|-------------------------|--------------------|
+| MySQL       | `localhost:3306`        | root / root        |
+| phpMyAdmin  | http://localhost:8080   | root / root        |
+| Base de datos | `cursodb`             | —                  |
+
+El fichero `docker/init.sql` se ejecuta automáticamente al arrancar el contenedor
+y crea las tablas `pedidos`, `alumnos`, `clientes` y `productos` con datos de ejemplo.
+
+#### Ejemplo — ejecutar un script SQL y ver el resultado
+
+El fichero `docker/consulta-alumnos.sql` lista todos los alumnos ordenados por curso y apellido:
+
+```bash
+./docker/06-exec-sql.sh docker/consulta-alumnos.sql
+```
+
+Salida esperada:
+
+```
++----+--------+------------------+-----------------+-------------+
+| id | nombre | apellidos        | email           | curso       |
++----+--------+------------------+-----------------+-------------+
+|  1 | María  | García López     | maria@curso.com | Java 2026   |
+|  2 | Carlos | Martínez Ruiz    | carlos@curso.com| Java 2026   |
+|  3 | Lucía  | Fernández Pérez  | lucia@curso.com | Python 2026 |
++----+--------+------------------+-----------------+-------------+
+```
+
+> El cliente `mysql` muestra la tabla con bordes cuando se ejecuta en modo interactivo
+> (`07-mysql.sh`). Con `06-exec-sql.sh` la salida es texto separado por tabuladores,
+> suficiente para scripts y redirecciones.
+
+---
+
 ### Acceso a base de datos — `ClienteRepository` / `Cliente`
 
 JDBC (*Java Database Connectivity*) es la API estándar para conectarse a bases de datos
@@ -342,6 +394,52 @@ Conceptos clave que ilustra `ClienteRepository`:
 | `try-with-resources` | Cierra `Connection`, `PreparedStatement` y `ResultSet` automáticamente |
 
 El test `ClienteRepositoryTest` usa **H2 en memoria**: no requiere ningún servidor externo.
+
+---
+
+### Acceso a MySQL — `PedidoRepository` / `Pedido`
+
+Ejemplo completamente diferente al anterior: conecta contra **MySQL real** (no H2)
+y añade operaciones que `ClienteRepository` no tiene.
+
+| Concepto | Qué demuestra |
+|----------|---------------|
+| `MysqlDataSource` | Configurar un `DataSource` para MySQL Connector/J |
+| `Pedido.Estado` (enum) | Mapear una columna `ENUM` de MySQL a un enum Java |
+| `findByEstado` | `SELECT ... WHERE estado = ?` — filtrado por valor de enum |
+| `updateEstado` | `UPDATE` — modificar un campo sin reemplazar la fila entera |
+| `@Ignore` en los tests | Marcar tests de integración para que no corran en CI sin la BBDD |
+
+**Requisito:** contenedor MySQL levantado (`docker/01-up.sh`)
+
+**Test:** `PedidoRepositoryMysqlTest` — deshabilitado con `@Ignore` por defecto
+
+Para ejecutarlo manualmente:
+```bash
+./docker/01-up.sh
+mvn test -Dtest=PedidoRepositoryMysqlTest
+```
+
+---
+
+### Ejercicio — `EjAlumnoRepository` / `EjAlumno`
+
+Practica los mismos patrones JDBC pero sobre la tabla `alumnos` de MySQL.
+
+**Enunciado:**
+1. Levanta el entorno con `docker/01-up.sh`.
+2. Comprueba en phpMyAdmin (`http://localhost:8080`) que existe la tabla `alumnos`.
+3. Estudia `EjAlumnoRepository` y compara su estructura con `PedidoRepository`.
+4. Quita el `@Ignore` de `EjAlumnoRepositoryTest` y ejecuta los tests:
+   ```bash
+   mvn test -Dtest=EjAlumnoRepositoryTest
+   ```
+5. Haz que todos los tests pasen en verde.
+
+La tabla `alumnos` tiene: `id`, `nombre`, `apellidos`, `email` (único), `curso`.
+El repositorio incluye `findByCurso` y `updateCurso` como variantes de los métodos de filtrado y actualización.
+
+**Test:** `EjAlumnoRepositoryTest` — deshabilitado con `@Ignore` por defecto
 
 ---
 
