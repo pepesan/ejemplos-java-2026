@@ -33,16 +33,20 @@ public class ClienteRepositoryTest {
     @Test
     public void saveDevuelveIdGenerado() throws SQLException {
         long id = repo.save(new Cliente("Ana", "ana@test.com"));
+        System.out.println(id);
+        long id2 = repo.save(new Cliente("Juan", "juan@test.com"));
+        System.out.println(id2);
         assertTrue(id > 0);
     }
 
     @Test
     public void findByIdDevuelveClienteGuardado() throws SQLException {
-        long id = repo.save(new Cliente("Bob", "bob@test.com"));
+        long id = repo.save(new Cliente("Belén", "belen@test.com"));
         Optional<Cliente> found = repo.findById(id);
         assertTrue(found.isPresent());
-        assertEquals("Bob", found.get().getNombre());
-        assertEquals("bob@test.com", found.get().getEmail());
+        assertEquals(id, found.get().getId());
+        assertEquals("Belén", found.get().getNombre());
+        assertEquals("belen@test.com", found.get().getEmail());
     }
 
     @Test
@@ -52,10 +56,18 @@ public class ClienteRepositoryTest {
 
     @Test
     public void findAllDevuelveTodosLosClientes() throws SQLException {
-        repo.save(new Cliente("Ana", "ana@test.com"));
-        repo.save(new Cliente("Bob", "bob@test.com"));
+        repo.save(new Cliente("Belén", "belen@test.com"));
+        repo.save(new Cliente("Paco", "paco@test.com"));
         List<Cliente> lista = repo.findAll();
         assertEquals(2, lista.size());
+        Cliente c = lista.getFirst();
+        assertEquals(1,c.getId());
+        assertEquals("Belén", c.getNombre());
+        assertEquals("belen@test.com", c.getEmail());
+        c = lista.get(1);
+        assertEquals(2,c.getId());
+        assertEquals("Paco", c.getNombre());
+        assertEquals("paco@test.com", c.getEmail());
     }
 
     @Test
