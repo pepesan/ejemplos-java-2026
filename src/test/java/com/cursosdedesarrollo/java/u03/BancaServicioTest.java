@@ -22,6 +22,42 @@ public class BancaServicioTest {
         new BancaServicio(10.0).retirar(50.0);
     }
 
+    // ── PedidoInvalidoException ──────────────────────────────────────────────
+
+    @Test(expected = PedidoInvalidoException.class)
+    public void procesarPedidoIdNuloLanzaPedidoInvalido() {
+        new BancaServicio(100.0).procesarPedido(null, 10.0);
+    }
+
+    @Test(expected = PedidoInvalidoException.class)
+    public void procesarPedidoImporteNegativoLanzaPedidoInvalido() {
+        new BancaServicio(100.0).procesarPedido("P-001", -5.0);
+    }
+
+    @Test(expected = PedidoInvalidoException.class)
+    public void procesarPedidoSaldoInsuficienteLanzaPedidoInvalido() {
+        new BancaServicio(10.0).procesarPedido("P-002", 50.0);
+    }
+
+    @Test
+    public void procesarPedidoValidoReduceSaldo() {
+        BancaServicio b = new BancaServicio(100.0);
+        b.procesarPedido("P-003", 40.0);
+        assertEquals(60.0, b.getSaldo(), 0.001);
+    }
+
+    @Test
+    public void procesarPedidoGuardaPedidoIdEnExcepcion() {
+        try {
+            new BancaServicio(10.0).procesarPedido("P-999", 50.0);
+            fail("Se esperaba PedidoInvalidoException");
+        } catch (PedidoInvalidoException e) {
+            assertEquals("P-999", e.getPedidoId());
+        }
+    }
+
+    // ── try-catch-finally ────────────────────────────────────────────────────
+
     @Test
     public void tryCatchFinallyCapturaNFE() {
         String resultado = "";

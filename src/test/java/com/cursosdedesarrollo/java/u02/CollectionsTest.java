@@ -5,6 +5,162 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class CollectionsTest {
+    // ── List básico ──────────────────────────────────────────────────────────
+
+    @Test
+    public void listBasicoOperaciones() {
+        // List: colección ordenada que permite duplicados y acceso por índice.
+        List<String> lista = new ArrayList<>();
+        lista.add("uno");
+        lista.add("dos");
+        lista.add("tres");
+
+        assertEquals(3, lista.size());
+        assertEquals("dos", lista.get(1));
+        assertTrue(lista.contains("tres"));
+
+        lista.remove("uno");
+        assertEquals(2, lista.size());
+        assertFalse(lista.contains("uno"));
+        lista.remove(0);
+        assertEquals(1, lista.size());
+        assertTrue(lista.contains("tres"));
+        assertFalse(lista.contains("dos"));
+
+    }
+
+    // ── ArrayList básico ─────────────────────────────────────────────────────
+
+    @Test
+    public void arrayListBasicoOperaciones() {
+        // ArrayList: List respaldada por un array dinámico; acceso O(1) por índice.
+        ArrayList<Integer> numeros = new ArrayList<>();
+        numeros.add(10);
+        numeros.add(20);
+        numeros.add(30);
+
+        assertEquals(Integer.valueOf(20), numeros.get(1));
+
+        numeros.set(1, 99);
+        assertEquals(Integer.valueOf(99), numeros.get(1));
+
+        numeros.remove(Integer.valueOf(10));
+        assertEquals(2, numeros.size());
+
+        assertEquals(Integer.valueOf(99), numeros.get(0));
+    }
+
+    // ── LinkedList básico ────────────────────────────────────────────────────
+
+    @Test
+    public void linkedListBasicoOperaciones() {
+        // LinkedList: List doblemente enlazada; inserción/borrado en extremos O(1).
+        List<String> lista = new LinkedList<>();
+        lista.add("centro");
+        lista.addFirst("primero");
+        lista.addLast("ultimo");
+
+        assertEquals("primero", lista.getFirst());
+        assertEquals("ultimo", lista.getLast());
+        assertEquals(3, lista.size());
+
+        lista.removeFirst();
+        assertEquals("centro", lista.getFirst());
+    }
+
+    // ── Map básico ───────────────────────────────────────────────────────────
+
+    @Test
+    public void mapBasicoOperaciones() {
+        // Map: asocia claves únicas a valores; ninguna clave puede repetirse.
+        Map<String, Integer> mapa = new HashMap<>();
+        mapa.put("manzana", 3);
+        mapa.put("pera", 5);
+        mapa.put("manzana", 10); // sobreescribe el valor anterior
+
+        assertEquals(2, mapa.size());
+        assertEquals(Integer.valueOf(10), mapa.get("manzana"));
+        assertFalse(mapa.containsKey("naranja"));
+
+        mapa.remove("pera");
+        assertFalse(mapa.containsKey("pera"));
+    }
+
+    // ── HashMap básico ───────────────────────────────────────────────────────
+
+    @Test
+    public void hashMapBasicoOperaciones() {
+        // HashMap: implementación de Map con tabla hash; orden de claves no garantizado.
+        HashMap<String, String> capitales = new HashMap<>();
+        capitales.put("España", "Madrid");
+        capitales.put("Francia", "París");
+        capitales.put("Italia", "Roma");
+
+        assertEquals("Madrid", capitales.get("España"));
+        assertTrue(capitales.containsValue("París"));
+
+        capitales.putIfAbsent("España", "Barcelona"); // no sobreescribe porque ya existe
+        assertEquals("Madrid", capitales.get("España"));
+    }
+
+    // ── Set básico ───────────────────────────────────────────────────────────
+
+    @Test
+    public void setBasicoOperaciones() {
+        // Set: colección sin duplicados; add() devuelve false si el elemento ya existe.
+        Set<String> conjunto = new HashSet<>();
+        conjunto.add("rojo");
+        conjunto.add("verde");
+        conjunto.add("azul");
+        boolean añadido = conjunto.add("rojo"); // duplicado, no se añade
+
+        assertFalse(añadido);
+        assertEquals(3, conjunto.size());
+        assertTrue(conjunto.contains("verde"));
+
+        conjunto.remove("verde");
+        assertFalse(conjunto.contains("verde"));
+    }
+
+    // ── HashSet básico ───────────────────────────────────────────────────────
+
+    @Test
+    public void hashSetBasicoOperaciones() {
+        // HashSet: implementación de Set con tabla hash; sin orden garantizado.
+        HashSet<Integer> numeros = new HashSet<>();
+        numeros.add(1);
+        numeros.add(2);
+        numeros.add(3);
+        numeros.add(2); // duplicado ignorado
+
+        assertEquals(3, numeros.size());
+
+        HashSet<Integer> otros = new HashSet<>(Arrays.asList(2, 3, 4));
+        numeros.retainAll(otros); // intersección: {2, 3}
+        assertEquals(2, numeros.size());
+        assertTrue(numeros.contains(2));
+        assertTrue(numeros.contains(3));
+    }
+
+    // ── SortedSet básico ─────────────────────────────────────────────────────
+
+    @Test
+    public void sortedSetBasicoOperaciones() {
+        // SortedSet (TreeSet): Set que mantiene los elementos en orden natural ascendente.
+        SortedSet<String> nombres = new TreeSet<>();
+        nombres.add("Carlos");
+        nombres.add("Ana");
+        nombres.add("Beatriz");
+
+        assertEquals("Ana", nombres.first());
+        assertEquals("Carlos", nombres.last());
+
+        // headSet devuelve los elementos estrictamente menores que el dado
+        SortedSet<String> antesDeCarlos = nombres.headSet("Carlos");
+        assertEquals(2, antesDeCarlos.size());
+        assertTrue(antesDeCarlos.contains("Ana"));
+        assertTrue(antesDeCarlos.contains("Beatriz"));
+    }
 
     // ── Recorrer List ────────────────────────────────────────────────────────
 
@@ -133,153 +289,5 @@ public class CollectionsTest {
         assertEquals(Arrays.asList(10, 20), vals);
     }
 
-    // ── List básico ──────────────────────────────────────────────────────────
 
-    @Test
-    public void listBasicoOperaciones() {
-        // List: colección ordenada que permite duplicados y acceso por índice.
-        List<String> lista = new ArrayList<>();
-        lista.add("uno");
-        lista.add("dos");
-        lista.add("tres");
-
-        assertEquals(3, lista.size());
-        assertEquals("dos", lista.get(1));
-        assertTrue(lista.contains("tres"));
-
-        lista.remove("uno");
-        assertEquals(2, lista.size());
-        assertFalse(lista.contains("uno"));
-    }
-
-    // ── ArrayList básico ─────────────────────────────────────────────────────
-
-    @Test
-    public void arrayListBasicoOperaciones() {
-        // ArrayList: List respaldada por un array dinámico; acceso O(1) por índice.
-        ArrayList<Integer> numeros = new ArrayList<>();
-        numeros.add(10);
-        numeros.add(20);
-        numeros.add(30);
-
-        assertEquals(Integer.valueOf(20), numeros.get(1));
-
-        numeros.set(1, 99);
-        assertEquals(Integer.valueOf(99), numeros.get(1));
-
-        numeros.remove(Integer.valueOf(10));
-        assertEquals(2, numeros.size());
-    }
-
-    // ── LinkedList básico ────────────────────────────────────────────────────
-
-    @Test
-    public void linkedListBasicoOperaciones() {
-        // LinkedList: List doblemente enlazada; inserción/borrado en extremos O(1).
-        LinkedList<String> lista = new LinkedList<>();
-        lista.add("centro");
-        lista.addFirst("primero");
-        lista.addLast("ultimo");
-
-        assertEquals("primero", lista.getFirst());
-        assertEquals("ultimo", lista.getLast());
-        assertEquals(3, lista.size());
-
-        lista.removeFirst();
-        assertEquals("centro", lista.getFirst());
-    }
-
-    // ── Map básico ───────────────────────────────────────────────────────────
-
-    @Test
-    public void mapBasicoOperaciones() {
-        // Map: asocia claves únicas a valores; ninguna clave puede repetirse.
-        Map<String, Integer> mapa = new HashMap<>();
-        mapa.put("manzana", 3);
-        mapa.put("pera", 5);
-        mapa.put("manzana", 10); // sobreescribe el valor anterior
-
-        assertEquals(2, mapa.size());
-        assertEquals(Integer.valueOf(10), mapa.get("manzana"));
-        assertFalse(mapa.containsKey("naranja"));
-
-        mapa.remove("pera");
-        assertFalse(mapa.containsKey("pera"));
-    }
-
-    // ── HashMap básico ───────────────────────────────────────────────────────
-
-    @Test
-    public void hashMapBasicoOperaciones() {
-        // HashMap: implementación de Map con tabla hash; orden de claves no garantizado.
-        HashMap<String, String> capitales = new HashMap<>();
-        capitales.put("España", "Madrid");
-        capitales.put("Francia", "París");
-        capitales.put("Italia", "Roma");
-
-        assertEquals("Madrid", capitales.get("España"));
-        assertTrue(capitales.containsValue("París"));
-
-        capitales.putIfAbsent("España", "Barcelona"); // no sobreescribe porque ya existe
-        assertEquals("Madrid", capitales.get("España"));
-    }
-
-    // ── Set básico ───────────────────────────────────────────────────────────
-
-    @Test
-    public void setBasicoOperaciones() {
-        // Set: colección sin duplicados; add() devuelve false si el elemento ya existe.
-        Set<String> conjunto = new HashSet<>();
-        conjunto.add("rojo");
-        conjunto.add("verde");
-        conjunto.add("azul");
-        boolean añadido = conjunto.add("rojo"); // duplicado, no se añade
-
-        assertFalse(añadido);
-        assertEquals(3, conjunto.size());
-        assertTrue(conjunto.contains("verde"));
-
-        conjunto.remove("verde");
-        assertFalse(conjunto.contains("verde"));
-    }
-
-    // ── HashSet básico ───────────────────────────────────────────────────────
-
-    @Test
-    public void hashSetBasicoOperaciones() {
-        // HashSet: implementación de Set con tabla hash; sin orden garantizado.
-        HashSet<Integer> numeros = new HashSet<>();
-        numeros.add(1);
-        numeros.add(2);
-        numeros.add(3);
-        numeros.add(2); // duplicado ignorado
-
-        assertEquals(3, numeros.size());
-
-        HashSet<Integer> otros = new HashSet<>(Arrays.asList(2, 3, 4));
-        numeros.retainAll(otros); // intersección: {2, 3}
-        assertEquals(2, numeros.size());
-        assertTrue(numeros.contains(2));
-        assertTrue(numeros.contains(3));
-    }
-
-    // ── SortedSet básico ─────────────────────────────────────────────────────
-
-    @Test
-    public void sortedSetBasicoOperaciones() {
-        // SortedSet (TreeSet): Set que mantiene los elementos en orden natural ascendente.
-        SortedSet<String> nombres = new TreeSet<>();
-        nombres.add("Carlos");
-        nombres.add("Ana");
-        nombres.add("Beatriz");
-
-        assertEquals("Ana", nombres.first());
-        assertEquals("Carlos", nombres.last());
-
-        // headSet devuelve los elementos estrictamente menores que el dado
-        SortedSet<String> antesDeCarlos = nombres.headSet("Carlos");
-        assertEquals(2, antesDeCarlos.size());
-        assertTrue(antesDeCarlos.contains("Ana"));
-        assertTrue(antesDeCarlos.contains("Beatriz"));
-    }
 }

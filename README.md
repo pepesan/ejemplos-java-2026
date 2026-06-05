@@ -308,6 +308,20 @@ se crea una excepción propia extendiendo `RuntimeException` (unchecked) o `Exce
 
 ---
 
+### NullPointerException — `NullPointerExceptionTest`
+
+`NullPointerException` (NPE) se lanza automáticamente cuando se intenta usar
+una referencia que vale `null` (llamar a un método, acceder a un campo, etc.).
+Es una excepción **unchecked** — el compilador no la detecta.
+
+- Invocar cualquier método sobre `null` la dispara.
+- La defensa más sencilla: comprobar `!= null` antes de usar la referencia.
+- En Java moderno se prefiere `Optional` o diseño que evite nulls por contrato.
+
+**Test:** `NullPointerExceptionTest`
+
+---
+
 ## u04 — JDBC
 
 ### Acceso a base de datos — `ClienteRepository` / `Cliente`
