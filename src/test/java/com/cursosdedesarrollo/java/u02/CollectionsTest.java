@@ -108,6 +108,13 @@ public class CollectionsTest {
         assertEquals(Arrays.asList("ANA", "BOB", "CARLOS"), mayusculas);
     }
 
+    @Test
+    public void listPermiteDuplicados() {
+        List<String> lista = new ArrayList<>();
+        lista.add("Ana"); lista.add("Belén"); lista.add("Ana");
+        assertEquals(3, lista.size());
+    }
+
     // ── Map básico ───────────────────────────────────────────────────────────
 
     @Test
@@ -216,6 +223,42 @@ public class CollectionsTest {
         assertEquals(Arrays.asList("Ana=30", "Bob=25"), resumen);
     }
 
+    @Test
+    public void mapGetOrDefaultDevuelveDefectoCuandoFaltaClave() {
+        Map<String, Integer> edades = new HashMap<>();
+        edades.put("Ana", 30);
+        assertEquals(0, (int) edades.getOrDefault("Nadie", 0));
+    }
+
+    @Test
+    public void mapEntrySetIteraTodosLosPares() {
+        Map<String, Integer> edades = new LinkedHashMap<>();
+        edades.put("Ana", 30);
+        edades.put("Bob", 25);
+        List<String> claves = new ArrayList<>();
+        for (Map.Entry<String, Integer> e : edades.entrySet()) {
+            claves.add(e.getKey());
+        }
+        assertEquals(Arrays.asList("Ana", "Bob"), claves);
+    }
+
+    @Test
+    public void mapKeySetDevuelveTodasLasClaves() {
+        Map<String, Integer> m = new HashMap<>();
+        m.put("x", 1); m.put("y", 2);
+        assertTrue(m.keySet().contains("x"));
+        assertTrue(m.keySet().contains("y"));
+    }
+
+    @Test
+    public void mapValuesDevuelveTodosLosValores() {
+        Map<String, Integer> m = new HashMap<>();
+        m.put("a", 10); m.put("b", 20);
+        List<Integer> vals = new ArrayList<>(m.values());
+        Collections.sort(vals);
+        assertEquals(Arrays.asList(10, 20), vals);
+    }
+
     // ── Set básico ───────────────────────────────────────────────────────────
 
     @Test
@@ -264,13 +307,14 @@ public class CollectionsTest {
         nombres.add("Carlos");
         nombres.add("Ana");
         nombres.add("Beatriz");
+        nombres.add("Abel");
 
-        assertEquals("Ana", nombres.first());
+        assertEquals("Abel", nombres.first());
         assertEquals("Carlos", nombres.last());
 
         // headSet devuelve los elementos estrictamente menores que el dado
         SortedSet<String> antesDeCarlos = nombres.headSet("Carlos");
-        assertEquals(2, antesDeCarlos.size());
+        assertEquals(3, antesDeCarlos.size());
         assertTrue(antesDeCarlos.contains("Ana"));
         assertTrue(antesDeCarlos.contains("Beatriz"));
     }
@@ -282,7 +326,7 @@ public class CollectionsTest {
     @Test
     public void recorrerSetConForEach() {
         // Set no garantiza orden, así que solo comprobamos que están todos los elementos.
-        Set<String> conjunto = new HashSet<>(Arrays.asList("Ana", "Bob", "Carlos"));
+        Set<String> conjunto = new HashSet<>(Arrays.asList("Ana", "Belén", "Carlos"));
         int contador = 0;
         for (String elemento : conjunto) {
             assertFalse(elemento.isEmpty());
@@ -293,12 +337,7 @@ public class CollectionsTest {
 
 
 
-    @Test
-    public void listPermiteDuplicados() {
-        List<String> lista = new ArrayList<>();
-        lista.add("Ana"); lista.add("Bob"); lista.add("Ana");
-        assertEquals(3, lista.size());
-    }
+
 
     @Test
     public void setEliminaDuplicados() {
@@ -307,41 +346,7 @@ public class CollectionsTest {
         assertEquals(2, conjunto.size());
     }
 
-    @Test
-    public void mapGetOrDefaultDevuelveDefectoCuandoFaltaClave() {
-        Map<String, Integer> edades = new HashMap<>();
-        edades.put("Ana", 30);
-        assertEquals(0, (int) edades.getOrDefault("Nadie", 0));
-    }
 
-    @Test
-    public void mapEntrySetIteraTodosLosPares() {
-        Map<String, Integer> edades = new LinkedHashMap<>();
-        edades.put("Ana", 30);
-        edades.put("Bob", 25);
-        List<String> claves = new ArrayList<>();
-        for (Map.Entry<String, Integer> e : edades.entrySet()) {
-            claves.add(e.getKey());
-        }
-        assertEquals(Arrays.asList("Ana", "Bob"), claves);
-    }
-
-    @Test
-    public void mapKeySetDevuelveTodasLasClaves() {
-        Map<String, Integer> m = new HashMap<>();
-        m.put("x", 1); m.put("y", 2);
-        assertTrue(m.keySet().contains("x"));
-        assertTrue(m.keySet().contains("y"));
-    }
-
-    @Test
-    public void mapValuesDevuelveTodosLosValores() {
-        Map<String, Integer> m = new HashMap<>();
-        m.put("a", 10); m.put("b", 20);
-        List<Integer> vals = new ArrayList<>(m.values());
-        Collections.sort(vals);
-        assertEquals(Arrays.asList(10, 20), vals);
-    }
 
 
 }
